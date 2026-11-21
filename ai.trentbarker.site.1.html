@@ -1,0 +1,2925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRENTBARKER.COM /// WELCOME TO THE CHAOS ZONE</title>
+  <!-- Tailwind CSS for utility layout & responsive helpers -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ==========================================================================
+       1. CSS VARIABLES & GLOBAL CHAOS CONTROLS
+       ========================================================================== */
+    :root {
+      --glitch-level: 0.18;       /* 0 to 1 controlled by Glitch Overdrive slider */
+      --hue-shift: 0deg;          /* Dynamic hue shift */
+      --rgb-offset: 2px;          /* Chromatic aberration pixel offset */
+      --crt-opacity: 0.22;        /* Scanline visibility */
+      --jitter-px: 0px;           /* Screen micro-shake amplitude */
+
+      --neon-lime: #39ff14;
+      --hot-pink: #ff00cc;
+      --electric-cyan: #00f7ff;
+      --caution-yellow: #ffe600;
+      --win-gray: #c0c0c0;
+      --win-dark: #808080;
+      --win-light: #ffffff;
+      --win-navy: #000080;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: "Comic Sans MS", "Chalkboard SE", "Arial Rounded MT Bold", sans-serif;
+      color: #ffffff;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Allow text selection inside inputs/textareas and shoutbox */
+    input, textarea, .selectable {
+      user-select: text;
+    }
+
+    /* ==========================================================================
+       2. SWITCHABLE CHAOTIC BACKGROUNDS
+       ========================================================================== */
+    #bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      transition: background 0.35s ease;
+    }
+
+    /* Theme 0: Acid Checkerboard (Default Glitchcore/iCarly Fever Dream) */
+    body.bg-acid #bg-layer {
+      background-color: #16002b;
+      background-image:
+        linear-gradient(45deg, rgba(255, 0, 204, 0.22) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(57, 255, 20, 0.18) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(0, 247, 255, 0.2) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255, 230, 0, 0.16) 75%),
+        radial-gradient(circle at 20% 25%, #5b00a3 0%, transparent 45%),
+        radial-gradient(circle at 80% 75%, #00667a 0%, transparent 50%);
+      background-size: 64px 64px, 64px 64px, 64px 64px, 64px 64px, 100% 100%, 100% 100%;
+      background-position: 0 0, 0 32px, 32px -32px, -32px 0, 0 0, 0 0;
+      animation: bgScroll 18s linear infinite;
+    }
+
+    /* Theme 1: Retro Starfield */
+    body.bg-stars #bg-layer {
+      background-color: #03010f;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+        radial-gradient(2px 2px at 90px 140px, #00f7ff, transparent),
+        radial-gradient(3px 3px at 180px 60px, #ff00cc, transparent),
+        radial-gradient(2px 2px at 240px 210px, #ffe600, transparent),
+        radial-gradient(1.5px 1.5px at 310px 95px, #39ff14, transparent),
+        radial-gradient(circle at 50% 50%, rgba(88, 0, 150, 0.35), transparent 70%);
+      background-size: 350px 260px, 350px 260px, 350px 260px, 350px 260px, 350px 260px, 100% 100%;
+      animation: starDrift 26s linear infinite;
+    }
+
+    /* Theme 2: Matrix Synth Grid */
+    body.bg-matrix #bg-layer {
+      background-color: #021104;
+      background-image:
+        linear-gradient(rgba(0, 255, 65, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 65, 0.2) 1px, transparent 1px),
+        radial-gradient(circle at 50% 20%, rgba(0, 255, 65, 0.22), transparent 65%);
+      background-size: 36px 36px, 36px 36px, 100% 100%;
+      animation: bgScroll 12s linear infinite;
+    }
+
+    /* Theme 3: Hot Pink 2007 Y2K iCarly Pop */
+    body.bg-y2k #bg-layer {
+      background-color: #ff1493;
+      background-image:
+        radial-gradient(circle, #ffe600 18%, transparent 20%),
+        radial-gradient(circle, #00f7ff 14%, transparent 16%),
+        repeating-linear-gradient(-30deg, rgba(255, 255, 255, 0.14) 0px, rgba(255, 255, 255, 0.14) 18px, transparent 18px, transparent 36px);
+      background-size: 72px 72px, 72px 72px, 100% 100%;
+      background-position: 0 0, 36px 36px, 0 0;
+    }
+
+    /* Theme 4: Classic Windows 95 Teal */
+    body.bg-win95 #bg-layer {
+      background-color: #008080;
+      background-image:
+        radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+
+    @keyframes bgScroll {
+      0% { background-position: 0 0, 0 32px, 32px -32px, -32px 0, 0 0, 0 0; }
+      100% { background-position: 64px 64px, 64px 96px, 96px 32px, 32px 64px, 0 0, 0 0; }
+    }
+
+    @keyframes starDrift {
+      0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+      100% { background-position: 350px 260px, -350px 260px, 350px -260px, 175px 260px, -175px -260px, 0 0; }
+    }
+
+    /* ==========================================================================
+       3. CRT SCANLINES, GLITCH OVERDRIVE & BARREL ROLL EFFECTS
+       ========================================================================== */
+    #app-wrapper {
+      position: relative;
+      z-index: 2;
+      filter: hue-rotate(var(--hue-shift));
+      transition: transform 0.9s cubic-bezier(0.25, 0.9, 0.3, 1.1);
+      padding-bottom: 110px; /* Clearance for fixed chaos dock */
+    }
+
+    #app-wrapper.barrel-roll {
+      transform: rotate(360deg);
+    }
+
+    #app-wrapper.glitch-jitter {
+      animation: microJitter 0.14s infinite;
+    }
+
+    @keyframes microJitter {
+      0%   { transform: translate(0px, 0px); }
+      25%  { transform: translate(var(--jitter-px), calc(var(--jitter-px) * -1)); }
+      50%  { transform: translate(calc(var(--jitter-px) * -1), var(--jitter-px)); }
+      75%  { transform: translate(var(--jitter-px), var(--jitter-px)); }
+      100% { transform: translate(0px, 0px); }
+    }
+
+    #crt-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      pointer-events: none;
+      opacity: var(--crt-opacity);
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.35) 0px,
+          rgba(0, 0, 0, 0.35) 2px,
+          transparent 2px,
+          transparent 4px
+        ),
+        radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.55) 100%);
+      transition: opacity 0.25s ease;
+    }
+
+    body.crt-off #crt-overlay {
+      opacity: 0 !important;
+    }
+
+    /* ==========================================================================
+       4. BOUNCING DVD LOGO & MARQUEE TICKERS
+       ========================================================================== */
+    #dvd-logo {
+      position: fixed;
+      top: 120px;
+      left: 80px;
+      z-index: 1;
+      pointer-events: auto;
+      cursor: pointer;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      border: 3px solid currentColor;
+      background: rgba(0, 0, 0, 0.48);
+      text-shadow: 2px 2px 0 #000;
+      box-shadow: 0 0 18px currentColor;
+      will-change: transform;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+    }
+
+    #dvd-logo small {
+      font-family: "Courier New", monospace;
+      font-size: 0.62rem;
+      letter-spacing: 3px;
+      margin-top: 2px;
+    }
+
+    .marquee-strip {
+      position: relative;
+      z-index: 20;
+      width: 106%;
+      margin-left: -3%;
+      overflow: hidden;
+      white-space: nowrap;
+      border-top: 3px dashed #000;
+      border-bottom: 3px dashed #000;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.65);
+    }
+
+    .marquee-strip.top-banner {
+      background: linear-gradient(90deg, #ffe600, #39ff14, #00f7ff, #ff00cc, #ffe600);
+      color: #000;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      padding: 5px 0;
+      transform: rotate(-0.8deg);
+      margin-top: 8px;
+    }
+
+    .marquee-track {
+      display: inline-block;
+      animation: marqueeRun 22s linear infinite;
+    }
+
+    @keyframes marqueeRun {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ==========================================================================
+       5. CHAOTIC COLLAGE STAGE & DRAGGABLE WINDOWS
+       ========================================================================== */
+    #chaos-stage {
+      position: relative;
+      width: 100%;
+      max-width: 1480px;
+      margin: 14px auto 0;
+      min-height: 1840px;
+      padding: 12px;
+    }
+
+    .chaos-widget {
+      position: absolute;
+      border: 3px solid #000;
+      box-shadow:
+        6px 6px 0px #000,
+        0 0 20px rgba(0, 247, 255, 0.25);
+      border-radius: 8px;
+      background: #140826;
+      transition: box-shadow 0.15s ease;
+      transform: rotate(var(--tilt, 0deg));
+      max-width: calc(100vw - 24px);
+    }
+
+    .chaos-widget.dragging {
+      box-shadow:
+        12px 14px 0px rgba(0, 0, 0, 0.85),
+        0 0 28px rgba(255, 0, 204, 0.65);
+      transform: rotate(0deg) scale(1.015) !important;
+      cursor: grabbing;
+    }
+
+    .chaos-widget.minimized .win-body {
+      display: none;
+    }
+
+    /* Windows 95/98 Classic Beveled Window Variant */
+    .win95-box {
+      background: var(--win-gray);
+      color: #000;
+      border-top: 3px solid #ffffff;
+      border-left: 3px solid #ffffff;
+      border-right: 3px solid #404040;
+      border-bottom: 3px solid #404040;
+      border-radius: 3px;
+      box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.75);
+    }
+
+    .win-titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 10px;
+      cursor: grab;
+      touch-action: none;
+      font-family: "Courier New", monospace;
+      font-weight: 900;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      border-bottom: 3px solid #000;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .win-titlebar:active {
+      cursor: grabbing;
+    }
+
+    .win-title-text {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .win-controls {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .win-btn {
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      font-weight: 900;
+      font-size: 12px;
+      background: #c0c0c0;
+      color: #000;
+      border-top: 2px solid #fff;
+      border-left: 2px solid #fff;
+      border-right: 2px solid #404040;
+      border-bottom: 2px solid #404040;
+      border-radius: 2px;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .win-btn:active {
+      border-top: 2px solid #404040;
+      border-left: 2px solid #404040;
+      border-right: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+    }
+
+    .win-body {
+      padding: 12px;
+      border-radius: 0 0 5px 5px;
+    }
+
+    /* Mobile / Tablet Adaptive Collage Mode */
+    @media (max-width: 960px) {
+      #chaos-stage {
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 22px;
+        padding: 14px 10px 24px;
+      }
+
+      .chaos-widget {
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        max-width: 540px !important;
+        transform: rotate(calc(var(--tilt, 0deg) * 0.35));
+      }
+    }
+
+    /* ==========================================================================
+       6. CHROMATIC ABERRATION GLITCH TEXT & RETRO BUTTONS
+       ========================================================================== */
+    .glitch-logo {
+      position: relative;
+      display: inline-block;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(2rem, 5.2vw, 3.4rem);
+      line-height: 1.02;
+      letter-spacing: 2px;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-shadow:
+        calc(var(--rgb-offset) * -1) 0 #ff00cc,
+        var(--rgb-offset) 0 #00f7ff,
+        0 3px 0 #000;
+      animation: glitchTwitch 3.4s infinite;
+    }
+
+    .glitch-logo::before,
+    .glitch-logo::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .glitch-logo::before {
+      color: #ff00cc;
+      transform: translate(calc(var(--rgb-offset) * -1.4), -1px);
+      clip-path: polygon(0 0, 100% 0, 100% 38%, 0 38%);
+      opacity: 0.8;
+      animation: glitchSliceA 2.2s infinite steps(2);
+    }
+
+    .glitch-logo::after {
+      color: #00f7ff;
+      transform: translate(calc(var(--rgb-offset) * 1.4), 1px);
+      clip-path: polygon(0 62%, 100% 62%, 100% 100%, 0 100%);
+      opacity: 0.8;
+      animation: glitchSliceB 1.8s infinite steps(2);
+    }
+
+    @keyframes glitchTwitch {
+      0%, 92%, 100% { transform: skewX(0deg); }
+      94% { transform: skewX(6deg); }
+      96% { transform: skewX(-5deg); }
+      98% { transform: skewX(2deg); }
+    }
+
+    @keyframes glitchSliceA {
+      0%, 80%, 100% { clip-path: polygon(0 5%, 100% 5%, 100% 28%, 0 28%); }
+      85% { clip-path: polygon(0 45%, 100% 45%, 100% 68%, 0 68%); }
+    }
+
+    @keyframes glitchSliceB {
+      0%, 75%, 100% { clip-path: polygon(0 64%, 100% 64%, 100% 92%, 0 92%); }
+      82% { clip-path: polygon(0 15%, 100% 15%, 100% 34%, 0 34%); }
+    }
+
+    /* Chunky 2000s / Game Arcade Buttons */
+    .chunky-btn {
+      font-family: "Arial Black", Impact, sans-serif;
+      border: 3px solid #000;
+      border-radius: 10px;
+      box-shadow: 0 4px 0 #000, inset 0 2px 0 rgba(255,255,255,0.55);
+      cursor: pointer;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.1s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .chunky-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .chunky-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #000, inset 0 2px 0 rgba(255,255,255,0.3);
+    }
+
+    /* Giant DO NOT PRESS Button */
+    .red-doom-btn {
+      background: radial-gradient(circle at 35% 30%, #ff6b6b, #e60000 55%, #800000 100%);
+      color: #fff;
+      border: 4px solid #000;
+      border-radius: 999px;
+      padding: 12px 22px;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 1.5px;
+      box-shadow:
+        0 7px 0 #4d0000,
+        0 10px 22px rgba(255, 0, 0, 0.55),
+        inset 0 3px 6px rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      animation: pulseDanger 1.5s infinite;
+      transition: transform 0.08s, box-shadow 0.08s;
+    }
+
+    .red-doom-btn:active {
+      transform: translateY(5px);
+      box-shadow: 0 2px 0 #4d0000, 0 4px 12px rgba(255, 0, 0, 0.7);
+    }
+
+    @keyframes pulseDanger {
+      0%, 100% { box-shadow: 0 7px 0 #4d0000, 0 0 16px rgba(255, 0, 0, 0.65), inset 0 3px 6px rgba(255,255,255,0.5); }
+      50% { box-shadow: 0 7px 0 #4d0000, 0 0 32px rgba(255, 40, 40, 1), inset 0 3px 6px rgba(255,255,255,0.7); }
+    }
+
+    /* LED Visitor Counter */
+    .led-counter {
+      font-family: "Courier New", monospace;
+      background: #050505;
+      color: #39ff14;
+      border: 3px inset #555;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-shadow: 0 0 10px #39ff14;
+      cursor: pointer;
+    }
+
+    /* Sticky Note Styling */
+    .sticky-note {
+      background: linear-gradient(155deg, #fff46b 0%, #ffe600 80%, #f2ce00 100%);
+      color: #1a1200;
+      border: 3px solid #000;
+      border-radius: 4px 4px 26px 4px;
+      box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.78);
+    }
+
+    /* Polaroid Cat Frame */
+    .polaroid-frame {
+      background: #faf7f0;
+      color: #222;
+      padding: 10px 10px 14px;
+      border-radius: 6px;
+      border: 2px solid #ddd;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.08);
+    }
+
+    .cat-svg-wrap {
+      cursor: pointer;
+      transition: transform 0.12s cubic-bezier(0.3, 1.8, 0.5, 1);
+    }
+
+    .cat-svg-wrap:active {
+      transform: scale(0.93) rotate(-2deg);
+    }
+
+    /* Tarot 3D Flip Card */
+    .tarot-scene {
+      perspective: 900px;
+      width: 100%;
+      height: 270px;
+      cursor: pointer;
+    }
+
+    .tarot-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.22, 1.15, 0.36, 1);
+    }
+
+    .tarot-card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .tarot-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      border: 3px solid #ffe600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .tarot-back {
+      background:
+        repeating-conic-gradient(from 0deg, #210042 0deg 15deg, #3b0073 15deg 30deg);
+      box-shadow: inset 0 0 24px #ff00cc, 0 0 16px rgba(255, 230, 0, 0.45);
+    }
+
+    .tarot-front {
+      background: linear-gradient(160deg, #0d0024 0%, #240046 55%, #00293d 100%);
+      transform: rotateY(180deg);
+      box-shadow: inset 0 0 20px #00f7ff;
+    }
+
+    /* Rainbow Keyboard Keys */
+    .synth-key {
+      flex: 1;
+      height: 66px;
+      border: 2px solid #000;
+      border-radius: 0 0 8px 8px;
+      font-family: "Courier New", monospace;
+      font-weight: 900;
+      font-size: 0.72rem;
+      color: #000;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #000;
+      transition: transform 0.06s, filter 0.06s;
+    }
+
+    .synth-key:active, .synth-key.active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #000;
+      filter: brightness(1.35);
+    }
+
+    /* Sequencer Step Dot */
+    .seq-step {
+      width: 100%;
+      height: 16px;
+      border-radius: 4px;
+      border: 1.5px solid #000;
+      cursor: pointer;
+      background: #2b1d3d;
+      transition: transform 0.08s;
+    }
+
+    .seq-step.on {
+      background: #39ff14;
+      box-shadow: 0 0 8px #39ff14;
+    }
+
+    .seq-step.playing {
+      outline: 2px solid #ffe600;
+      transform: scale(1.15);
+    }
+
+    /* Graffiti Nuke Shake */
+    @keyframes nukeShake {
+      0%, 100% { transform: rotate(var(--tilt, 0deg)) translate(0, 0); }
+      20% { transform: rotate(calc(var(--tilt, 0deg) + 4deg)) translate(-8px, 6px); }
+      40% { transform: rotate(calc(var(--tilt, 0deg) - 4deg)) translate(8px, -6px); }
+      60% { transform: rotate(calc(var(--tilt, 0deg) + 3deg)) translate(-6px, -4px); }
+      80% { transform: rotate(calc(var(--tilt, 0deg) - 3deg)) translate(6px, 4px); }
+    }
+
+    .nuke-shaking {
+      animation: nukeShake 0.35s ease-in-out;
+    }
+
+    /* ==========================================================================
+       7. CURSOR SPARKLES, FLOATIES, CONFETTI & SARCASTIC POPUPS
+       ========================================================================== */
+    .sparkle-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 8800;
+      font-size: 14px;
+      will-change: transform, opacity;
+      animation: sparkleFade 0.65s ease-out forwards;
+    }
+
+    @keyframes sparkleFade {
+      0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+      100% { transform: translate(-50%, -130%) scale(0.2) rotate(140deg); opacity: 0; }
+    }
+
+    .floating-toy {
+      position: fixed;
+      z-index: 6000;
+      font-size: 2.3rem;
+      cursor: pointer;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.55));
+      user-select: none;
+      transition: transform 0.12s;
+    }
+
+    .floating-toy:hover {
+      transform: scale(1.25);
+    }
+
+    .emoji-rain-drop {
+      position: fixed;
+      top: -50px;
+      z-index: 8900;
+      pointer-events: none;
+      font-size: 2rem;
+      animation: rainFall linear forwards;
+    }
+
+    @keyframes rainFall {
+      to {
+        transform: translateY(112vh) rotate(540deg);
+        opacity: 0.9;
+      }
+    }
+
+    /* Custom Sarcastic Retro Alerts (Replaces native alert()) */
+    #sarcastic-toast-container {
+      position: fixed;
+      top: 64px;
+      right: 16px;
+      z-index: 9500;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 320px;
+      width: calc(100vw - 32px);
+      pointer-events: none;
+    }
+
+    .sarcastic-popup {
+      pointer-events: auto;
+      background: #c0c0c0;
+      color: #000;
+      border-top: 3px solid #fff;
+      border-left: 3px solid #fff;
+      border-right: 3px solid #404040;
+      border-bottom: 3px solid #404040;
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.8);
+      font-family: "Courier New", monospace;
+      animation: popIn 0.2s cubic-bezier(0.2, 1.4, 0.4, 1);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.7) translateY(-10px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    /* ==========================================================================
+       8. FIXED BOTTOM CHAOS TOOLBAR (DOCK)
+       ========================================================================== */
+    #chaos-dock {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9200;
+      max-width: calc(100vw - 16px);
+      background: rgba(18, 4, 34, 0.92);
+      border: 3px solid #00f7ff;
+      box-shadow: 0 0 22px rgba(255, 0, 204, 0.65), 4px 4px 0 #000;
+      border-radius: 16px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    #chaos-dock::-webkit-scrollbar {
+      display: none;
+    }
+
+    .dock-btn {
+      flex-shrink: 0;
+      padding: 7px 11px;
+      font-family: "Courier New", monospace;
+      font-weight: 900;
+      font-size: 0.76rem;
+      border: 2px solid #000;
+      border-radius: 9px;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 3px 0 #000;
+      transition: transform 0.08s;
+    }
+
+    .dock-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #000;
+    }
+
+    /* ==========================================================================
+       9. BORING CORPORATE MODE OVERLAY (PRANK)
+       ========================================================================== */
+    #corporate-mode {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #ffffff;
+      color: #111111;
+      font-family: "Times New Roman", Times, serif;
+      padding: 48px 24px;
+      overflow-y: auto;
+    }
+
+    #corporate-mode.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .escape-chaos-btn {
+      margin-top: 34px;
+      padding: 18px 28px;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 1.35rem;
+      letter-spacing: 2px;
+      color: #000;
+      background: linear-gradient(90deg, #ff00cc, #ffe600, #39ff14, #00f7ff, #ff00cc);
+      background-size: 250% 100%;
+      border: 5px solid #000;
+      border-radius: 16px;
+      cursor: pointer;
+      box-shadow: 0 8px 0 #000, 0 0 30px #ff00cc;
+      animation: rainbowFlash 0.9s linear infinite, escapeBounce 0.75s ease-in-out infinite alternate;
+    }
+
+    @keyframes rainbowFlash {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 250% 50%; }
+    }
+
+    @keyframes escapeBounce {
+      from { transform: scale(1) rotate(-1.5deg); }
+      to { transform: scale(1.07) rotate(1.5deg); }
+    }
+
+    /* Cat heart float animation */
+    @keyframes heartRise {
+      0% { transform: translate(-50%, 0) scale(0.7); opacity: 1; }
+      100% { transform: translate(-50%, -70px) scale(1.4); opacity: 0; }
+    }
+
+    .cat-heart {
+      position: absolute;
+      pointer-events: none;
+      font-size: 1.35rem;
+      animation: heartRise 0.85s ease-out forwards;
+    }
+  </style>
+</head>
+
+<body class="bg-acid">
+  <!-- Background Theme Layer -->
+  <div id="bg-layer"></div>
+
+  <!-- Bouncing DVD-Style TRENT Logo -->
+  <div id="dvd-logo" title="Click me to boost speed! Celebrates corner hits!">
+    <span>TRENT</span>
+    <small>VIDEO 2007</small>
+  </div>
+
+  <!-- CRT Scanlines & Vignette Overlay -->
+  <div id="crt-overlay"></div>
+
+  <!-- Custom Retro Sarcastic Popup Container (No native alert()!) -->
+  <div id="sarcastic-toast-container"></div>
+
+  <!-- Main Glitchable Application Wrapper -->
+  <div id="app-wrapper">
+    <!-- Top Tilted Y2K / iCarly Marquee Ticker -->
+    <div class="marquee-strip top-banner">
+      <div class="marquee-track">
+        ⚡ WELCOME TO TRENTBARKER.COM ⚡ BEST VIEWED ON A CRT MONITOR AT 3:14 AM ⚡ DRAG ANY WINDOW TO REARRANGE THE CHAOS ⚡ WARNING: HIGH LEVELS OF WHIMSY &amp; CALCULUS ⚡ PET THE FLAME POINT CAT FOR GOOD LUCK ⚡ NO ARTIFICIAL DYES WERE USED IN THIS HTML FILE ⚡ PRESSING THE RED BUTTON IS STRONGLY DISCOURAGED (DO IT) ⚡ &nbsp;&nbsp;&nbsp;
+        ⚡ WELCOME TO TRENTBARKER.COM ⚡ BEST VIEWED ON A CRT MONITOR AT 3:14 AM ⚡ DRAG ANY WINDOW TO REARRANGE THE CHAOS ⚡ WARNING: HIGH LEVELS OF WHIMSY &amp; CALCULUS ⚡ PET THE FLAME POINT CAT FOR GOOD LUCK ⚡ NO ARTIFICIAL DYES WERE USED IN THIS HTML FILE ⚡ PRESSING THE RED BUTTON IS STRONGLY DISCOURAGED (DO IT) ⚡ &nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         CHAOTIC OVERLAPPING COLLAGE WORKSPACE
+         All 9 interactive widgets live here and can be dragged & stacked!
+         ====================================================================== -->
+    <main id="chaos-stage">
+
+      <!-- ====================================================================
+           WIDGET 1: GLITCH HERO & CHAOS CONTROLS
+           ==================================================================== -->
+      <section
+        id="widget-hero"
+        class="chaos-widget"
+        data-default-left="32"
+        data-default-top="18"
+        style="width: 575px; --tilt: -1.6deg; background: linear-gradient(135deg, #1b003a 0%, #091338 55%, #2b0029 100%); z-index: 15;"
+      >
+        <div class="win-titlebar" style="background: linear-gradient(90deg, #ff00cc, #7000ff, #00f7ff); color: #fff;">
+          <span class="win-title-text">📺 TRENTBARKER.EXE — MAINFRAME_v2007.9</span>
+          <div class="win-controls">
+            <button class="win-btn" data-action="minimize" title="Minimize">_</button>
+            <button class="win-btn" data-action="wiggle" title="Shake!">★</button>
+          </div>
+        </div>
+        <div class="win-body text-center space-y-3">
+          <div class="text-xs font-mono tracking-widest text-cyan-300 bg-black/60 py-1 px-2 rounded border border-cyan-400/50 inline-block">
+            ╔══ OFFICIAL UNOFFICIAL INTERNET ZONE ══╗
+          </div>
+
+          <div>
+            <h1 class="glitch-logo" data-text="TRENTBARKER.COM">TRENTBARKER.COM</h1>
+            <p class="text-xs sm:text-sm text-yellow-300 font-bold mt-1">
+              ★ 100% Organic Chaos • Drag Any Titlebar • Click Everything ★
+            </p>
+          </div>
+
+          <!-- Absurd Visitor Counter + Red Doom Button Row -->
+          <div class="flex flex-wrap items-center justify-center gap-3 pt-1">
+            <div class="bg-black/50 border-2 border-lime-400 rounded-lg p-2 flex flex-col items-center">
+              <span class="text-[10px] font-mono text-lime-300 uppercase tracking-wider">Absurd Visitor Counter (Click!)</span>
+              <div id="visitor-counter" class="led-counter mt-1" title="Click to inflate Trent's fame">0042069</div>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <button id="doom-btn" class="red-doom-btn">🚨 DO NOT PRESS 🚨</button>
+              <span id="doom-count-label" class="text-[11px] font-mono text-pink-300 mt-1">Chaos Level: 0 (Behaving)</span>
+            </div>
+          </div>
+
+          <!-- Glitch Overdrive Slider -->
+          <div class="bg-black/65 border-2 border-pink-500 rounded-lg p-3 text-left">
+            <div class="flex items-center justify-between text-xs font-mono font-bold mb-1">
+              <span class="text-pink-400">⚡ GLITCH OVERDRIVE</span>
+              <span id="glitch-status" class="text-lime-400">18% — MILDLY VIBING</span>
+            </div>
+            <input
+              id="glitch-slider"
+              type="range"
+              min="0"
+              max="100"
+              value="18"
+              class="w-full accent-pink-500 cursor-pointer h-3 rounded-lg"
+            />
+            <div class="flex justify-between text-[10px] font-mono text-gray-300 mt-1">
+              <span>Normal-ish</span>
+              <span>Spicy CRT</span>
+              <span>DEEP FRIED</span>
+              <span>REALITY MELT</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           WIDGET 2: DRAGGABLE STICKY NOTE — "ALMOST ABOUT ME" LORE MACHINE
+           ==================================================================== -->
+      <section
+        id="widget-lore"
+        class="chaos-widget sticky-note"
+        data-default-left="630"
+        data-default-top="32"
+        style="width: 365px; --tilt: 2.8deg; z-index: 16;"
+      >
+        <div class="win-titlebar" style="background: #ff9900; color: #000;">
+          <span class="win-title-text">📝 ALMOST_ABOUT_TRENT.TXT</span>
+          <div class="win-controls">
+            <button class="win-btn" data-action="minimize" title="Minimize">_</button>
+          </div>
+        </div>
+        <div class="win-body space-y-3">
+          <div class="flex items-center justify-between text-xs font-mono font-bold border-b-2 border-dashed border-black/40 pb-1">
+            <span>🎰 LORE SLOT MACHINE</span>
+            <span id="lore-counter" class="bg-black text-yellow-300 px-2 py-0.5 rounded">1 / 14</span>
+          </div>
+
+          <!-- Slot Reel Window -->
+          <div class="bg-white border-4 border-black rounded-lg p-3 min-h-[116px] flex flex-col justify-center shadow-inner relative overflow-hidden">
+            <div class="text-[10px] font-mono font-bold text-pink-600 uppercase mb-1" id="lore-tag">
+              ★ FACT CHECK: PROBABLY TRUE
+            </div>
+            <p id="lore-text" class="text-base font-bold leading-snug text-black">
+              Knows too much calculus and still counts on fingers sometimes.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              id="spin-lore-btn"
+              class="chunky-btn flex-1 py-2.5 px-3 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 text-white text-sm"
+            >
+              🎲 DISPENSE RANDOM LORE
+            </button>
+          </div>
+          <p class="text-[11px] font-mono text-black/80 text-center">
+            *Disclaimer: 84% biographical, 16% interdimensional static.
+          </p>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           WIDGET 4: PET THE FLAME POINT CAT WIDGET
+           ==================================================================== -->
+      <section
+        id="widget-cat"
+        class="chaos-widget win95-box"
+        data-default-left="1018"
+        data-default-top="24"
+        style="width: 340px; --tilt: -2.4deg; z-index: 17;"
+      >
+        <div class="win-titlebar" style="background: linear-gradient(90deg, #000080, #1084d0); color: #fff;">
+          <span class="win-title-text">🐱 FLAME_POINT_CAT.BMP</span>
+          <div class="win-controls">
+            <button class="win-btn" data-action="minimize" title="Minimize">_</button>
+          </div>
+        </div>
+        <div class="win-body space-y-2">
+          <div class="polaroid-frame relative overflow-hidden">
+            <div
+              id="cat-pet-zone"
+              class="cat-svg-wrap relative rounded bg-gradient-to-b from-sky-200 via-amber-50 to-orange-100 border-2 border-black/20 flex items-center justify-center py-2"
+              title="Click or tap to pet the toasted marshmallow cat!"
+            >
+              <!-- Custom Inline SVG: Flame Point Siamese Cat -->
+              <svg id="flame-cat-svg" viewBox="0 0 220 185" class="w-48 h-40">
+                <!-- Swishing Toasted Orange Tail -->
+                <path id="cat-tail" d="M 158 145 Q 202 128 192 84 Q 186 64 174 72" fill="none" stroke="#f08c3a" stroke-width="14" stroke-linecap="round">
+                  <animateTransform attributeName="transform" type="rotate" values="-6 158 145; 10 158 145; -6 158 145" dur="2.6s" repeatCount="indefinite" />
+                </path>
+                <!-- Cream Body -->
+                <ellipse cx="110" cy="142" rx="52" ry="38" fill="#fff8eb" stroke="#3b2618" stroke-width="3.5" />
+                <!-- Subtle Toasted Back Shading -->
+                <ellipse cx="110" cy="134" rx="34" ry="20" fill="#fde7c8" opacity="0.7" />
+                <!-- Cute Paws with Orange Tips -->
+                <ellipse cx="86" cy="170" rx="14" ry="9" fill="#f7b272" stroke="#3b2618" stroke-width="3" />
+                <ellipse cx="134" cy="170" rx="14" ry="9" fill="#f7b272" stroke="#3b2618" stroke-width="3" />
+                <!-- Left Ear (Toasted Flame Orange) -->
+                <polygon points="64,66 56,20 96,46" fill="#ee8132" stroke="#3b2618" stroke-width="3.5" stroke-linejoin="round" />
+                <polygon points="69,59 64,33 88,48" fill="#ffc2a1" />
+                <!-- Right Ear (Toasted Flame Orange) -->
+                <polygon points="156,66 164,20 124,46" fill="#ee8132" stroke="#3b2618" stroke-width="3.5" stroke-linejoin="round" />
+                <polygon points="151,59 156,33 132,48" fill="#ffc2a1" />
+                <!-- Cream Siamese Head -->
+                <ellipse cx="110" cy="84" rx="50" ry="42" fill="#fffaf0" stroke="#3b2618" stroke-width="3.5" />
+                <!-- Flame Point Orange Forehead & Nose Mask -->
+                <ellipse cx="110" cy="91" rx="22" ry="15" fill="#f6a764" opacity="0.85" />
+                <path d="M 90 50 Q 110 42 130 50" fill="none" stroke="#f29b50" stroke-width="6" stroke-linecap="round" opacity="0.65" />
+
+                <!-- Normal Icy-Blue Siamese Eyes -->
+                <g id="cat-eyes-open">
+                  <ellipse cx="89" cy="80" rx="9" ry="10" fill="#32c5ff" stroke="#1e293b" stroke-width="2.5" />
+                  <ellipse cx="89" cy="80" rx="4" ry="7" fill="#0f172a" />
+                  <circle cx="86" cy="76" r="2.5" fill="#ffffff" />
+
+                  <ellipse cx="131" cy="80" rx="9" ry="10" fill="#32c5ff" stroke="#1e293b" stroke-width="2.5" />
+                  <ellipse cx="131" cy="80" rx="4" ry="7" fill="#0f172a" />
+                  <circle cx="128" cy="76" r="2.5" fill="#ffffff" />
+                </g>
+
+                <!-- Happy Squinting Eyes (Shown When Petted) -->
+                <g id="cat-eyes-happy" style="display: none;">
+                  <path d="M 79 82 Q 89 70 99 82" fill="none" stroke="#3b2618" stroke-width="3.5" stroke-linecap="round" />
+                  <path d="M 121 82 Q 131 70 141 82" fill="none" stroke="#3b2618" stroke-width="3.5" stroke-linecap="round" />
+                </g>
+
+                <!-- Pink-Orange Nose & Cute :3 Mouth -->
+                <polygon points="105,90 115,90 110,96" fill="#ff758f" stroke="#3b2618" stroke-width="1.8" />
+                <path d="M 110 96 Q 103 105 97 100 M 110 96 Q 117 105 123 100" fill="none" stroke="#3b2618" stroke-width="2.6" stroke-linecap="round" />
+
+                <!-- Rosy Cheeks -->
+                <ellipse cx="75" cy="92" rx="6" ry="3.5" fill="#ff8fab" opacity="0.65" />
+                <ellipse cx="145" cy="92" rx="6" ry="3.5" fill="#ff8fab" opacity="0.65" />
+
+                <!-- Whiskers -->
+                <g stroke="#3b2618" stroke-width="2" stroke-linecap="round">
+                  <line x1="48" y1="84" x2="72" y2="88" />
+                  <line x1="46" y1="94" x2="72" y2="94" />
+                  <line x1="172" y1="84" x2="148" y2="88" />
+                  <line x1="174" y1="94" x2="148" y2="94" />
+                </g>
+              </svg>
+              <span class="absolute bottom-1 right-2 text-[10px] font-mono bg-white/80 px-1.5 rounded border border-black/30 text-black font-bold">
+                👆 TAP TO PET
+              </span>
+            </div>
+
+            <div class="mt-2 text-center">
+              <div class="font-bold text-sm text-orange-700" id="cat-mood-text">
+                "Judges your mouse movement."
+              </div>
+            </div>
+          </div>
+
+          <!-- Purr Power Gauge -->
+          <div class="bg-white border-2 border-gray-600 p-2 rounded">
+            <div class="flex justify-between text-[11px] font-mono font-bold mb-1">
+              <span>⚡ PURR POWER: <span id="purr-level">LVL 1</span></span>
+              <span id="pet-count-label">0 pets</span>
+            </div>
+            <div class="w-full h-4 bg-gray-300 border-2 border-black rounded overflow-hidden">
+              <div id="purr-bar" class="h-full bg-gradient-to-r from-orange-400 via-pink-500 to-yellow-300 transition-all duration-150" style="width: 10%;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           WIDGET 3: WEB AUDIO SYNTH & ABSURD SOUNDBOARD
+           ==================================================================== -->
+      <section
+        id="widget-synth"
+        class="chaos-widget"
+        data-default-left="24"
+        data-default-top="445"
+        style="width: 495px; --tilt: 1.4deg; background: linear-gradient(160deg, #10002b 0%, #240046 100%); z-index: 14;"
+      >
+        <div class="win-titlebar" style="background: linear-gradient(90deg, #39ff14, #00f7ff); color: #000;">
+          <span class="win-title-text">🎹 TRENT'S WEIRD SIGNAL SYNTH &amp; SOUNDBOARD</span>
+          <div class="win-controls">
+            <button class="win-btn" data-action="minimize" title="Minimize">_</button>
+          </div>
+        </div>
+        <div class="win-body space-y-3">
+          <!-- 7 Absurd Soundboard Buttons -->
+          <div>
+            <div class="text-[11px] font-mono text-cyan-300 mb-1.5 flex justify-between">
+              <span>🔊 ABSURD FX PAD (WEB AUDIO API)</span>
+              <select id="synth-wave" class="bg-black text-lime-300 border border-lime-400 rounded px-1 text-[11px] cursor-pointer">
+                <option value="sawtooth">Wave: SAW</option>
+                <option value="square">Wave: SQUARE</option>
+                <option value="triangle">Wave: TRI</option>
+                <option value="sine">Wave: SINE</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+              <button class="chunky-btn py-2 px-1 text-xs bg-lime-400 text-black" data-sfx="laser">🔫 LASER</button>
+              <button class="chunky-btn py-2 px-1 text-xs bg-yellow-300 text-black" data-sfx="boing">🦘 BOING</button>
+              <button class="chunky-btn py-2 px-1 text-xs bg-cyan-300 text-black" data-sfx="glitch">⚡ GLITCH</button>
+              <button class="chunky-btn py-2 px-1 text-xs bg-pink-500 text-white" data-sfx="ufo">🛸 UFO</button>
+              <button class="chunky-btn py-2 px-1 text-xs bg-orange-400 text-black" data-sfx="meow">🐱 MEOW</button>
+              <button class="chunky-btn py-2 px-1 text-xs bg-purple-500 text-white" data-sfx="sub">💣 SUB DROP</button>
+              <button class="chunky-btn py-2 px-1 text-xs bg-red-500 text-white col-span-3 sm:col-span-2" data-sfx="chaos">🌈 CHAOS CHORD</button>
+            </div>
+          </div>
+
+          <!-- 8-Note Rainbow Keyboard -->
+          <div>
+            <div class="text-[11px] font-mono text-pink-300 mb-1">🌈 MINI RAINBOW KEYBOARD (C4 – C5)</div>
+            <div class="flex gap-1" id="rainbow-keys">
+              <button class="synth-key" data-freq="261.63" style="background:#ff3b3b;">C4</button>
+              <button class="synth-key" data-freq="293.66" style="background:#ff9500;">D4</button>
+              <button class="synth-key" data-freq="329.63" style="background:#ffe600;">E4</button>
+              <button class="synth-key" data-freq="349.23" style="background:#39ff14;">F4</button>
+              <button class="synth-key" data-freq="392.00" style="background:#00f7ff;">G4</button>
+              <button class="synth-key" data-freq="440.00" style="background:#4d79ff;">A4</button>
+              <button class="synth-key" data-freq="493.88" style="background:#c44dff;">B4</button>
+              <button class="synth-key" data-freq="523.25" style="background:#ff00cc;">C5</button>
+            </div>
+          </div>
+
+          <!-- 4-Track Mini Loop Sequencer -->
+          <div class="bg-black/60 border-2 border-purple-500 rounded-lg p-2.5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-mono text-yellow-300 font-bold">🎛️ 4-TRACK CHAOS LOOP (128 BPM)</span>
+              <button id="loop-toggle-btn" class="chunky-btn px-3 py-1 text-xs bg-lime-400 text-black">
+                ▶ PLAY LOOP
+              </button>
+            </div>
+            <div id="sequencer-grid" class="space-y-1.5 text-[10px] font-mono">
+              <!-- Populated dynamically via JS for 4 tracks x 8 steps -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           WIDGET 5: COLLATZ CONJECTURE VISUALIZER ("3n+1 BRAIN MELTER")
+           ==================================================================== -->
+      <section
+        id="widget-collatz"
+        class="chaos-widget"
+        data-default-left="542"
+        data-default-top="410"
+        style="width: 455px; --tilt: -1.8deg; background: #031205; border-color: #00ff41; z-index: 13;"
+      >
+        <div class="win-titlebar" style="background: #003b0f; color: #00ff41; border-bottom-color: #00ff41;">
+          <span class="win-title-text">🧮 3n+1_BRAIN_MELTER.SH — COLLATZ TERMINAL</span>
+          <div class="win-controls">
+            <button class="win-btn" data-action="minimize" title="Minimize">_</button>
+          </div>
+        </div>
+        <div class="win-body font-mono text-[#00ff41] space-y-2.5">
+          <div class="flex flex-wrap gap-1.5 items-center">
+            <label for="collatz-input" class="text-xs">n =</label>
+            <input
+              id="collatz-input"
+              type="number"
+              min="1"
+              max="99999999"
+              value="27"
+              class="w-28 bg-black border-2 border-[#00ff41] rounded px-2 py-1 text-sm text-[#00ff41] focus:outline-none"
+            />
+            <button id="collatz-run-btn" class="chunky-btn px-2.5 py-1 text-xs bg-[#00ff41] text-black">PLOT</button>
+            <button id="collatz-rand-btn" class="chunky-btn px-2.5 py-1 text-xs bg-yellow-300 text-black">RANDOM</button>
+            <button class="collatz-preset text-[11px] px-1.5 py-0.5 border border-[#00ff41]/60 rounded hover:bg-[#00ff41]/20" data-n="27">27</button>
+            <button class="collatz-preset text-[11px] px-1.5 py-0.5 border border-[#00ff41]/60 rounded hover:bg-[#00ff41]/20" data-n="871">871</button>
+          </div>
+
+          <!-- Glowing Phosphor Canvas Graph -->
+          <div class="relative border-2 border-[#00ff41]/70 rounded bg-black overflow-hidden">
+            <canvas id="collatz-canvas" class="w-full block" style="height: 175px;"></canvas>
+          </div>
+
+          <!-- Stats & Silly Math Commentary -->
+          <div class="grid grid-cols-2 gap-2 text-xs bg-black/70 p-2 rounded border border-[#00ff41]/40">
+            <div>STEPS TO 1: <strong id="collatz-steps" class="text-yellow-300">111</strong></div>
+            <div>PEAK HEIGHT: <strong id="collatz-peak" class="text-cyan-300">9,232</strong></div>
+          </div>
+          <div id="collatz-comment" class="text-xs text-lime-200 bg-[#05290c] p-2 rounded border-l-4 border-[#00ff41]">
+            > Classic 27! Tiny number, massive roller coaster. Mathematicians are still sweating.
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           WIDGET 6: FIDGET SPINNER / CLICKER WHEEL
+           ==================================================================== -->
+      <section
+        id="widget-spinner"
+        class="chaos-widget"
+        data-default-left="1020"
+        data-default-top="442"
+        style="width: 335px; --tilt: 2.2deg; background: linear-gradient(150deg, #12002b, #002333); z-index: 12;"
+      >
+        <div class="win-titlebar" style="background: linear-gradient(90deg, #ffe600, #ff00cc); color: #000;">
+          <span class="win-title-text">🌀 HYPER_FIDGET_3000.STL</span>
+          <div class="win-controls">
+            <button class="win-btn" data-action="minimize" title="Minimize">_</button>
+          </div>
+        </div>
+        <div class="win-body text-center space-y-2.5">
+          <div class="text-xs font-mono text-cyan-300">
+            CLICK OR FLICK TO BREAK PHYSICS!
+          </div>
+
+          <!-- Custom Neon SVG Fidget Spinner -->
+          <div id="spinner-zone" class="relative mx-auto w-44 h-44 flex items-center justify-center cursor-pointer select-none">
+            <svg id="fidget-svg" viewBox="0 0 200 200" class="w-40 h-40 drop-shadow-[0_0_14px_rgba(0,247,255,0.8)]">
+              <defs>
+                <linearGradient id="spinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#39ff14" />
+                  <stop offset="50%" stop-color="#00f7ff" />
+                  <stop offset="100%" stop-color="#ff00cc" />
+                </linearGradient>
+              </defs>
+              <!-- 3-Lobe Body -->
+              <path
+                d="M100,24 C122,24 134,42 126,64 L148,104 C170,104 184,124 174,145 C164,166 138,170 124,152 L76,152 C62,170 36,166 26,145 C16,124 30,104 52,104 L74,64 C66,42 78,24 100,24 Z"
+                fill="url(#spinGrad)"
+                stroke="#000"
+                stroke-width="6"
+                stroke-linejoin="round"
+              />
+              <!-- Outer Bearings -->
+              <circle cx="100" cy="48" r="18" fill="#111" stroke="#ffe600" stroke-width="5" />
+              <circle cx="100" cy="48" r="7" fill="#00f7ff" />
+
+              <circle cx="148" cy="134" r="18" fill="#111" stroke="#39ff14" stroke-width="5" />
+              <circle cx="148" cy="134" r="7" fill="#ff00cc" />
+
+              <circle cx="52" cy="134" r="18" fill="#111" stroke="#ff00cc" stroke-width="5" />
+              <circle cx="52" cy="134" r="7" fill="#ffe600" />
+
+              <!-- Center Cap -->
+              <circle cx="100" cy="105" r="22" fill="#ffe600" stroke="#000" stroke-width="5" />
+              <text x="100" y="110" text-anchor="middle" font-family="Impact, sans-serif" font-size="14" fill="#000">TB</text>
+            </svg>
+          </div>
+
+          <!-- Live RPM & Rank Display -->
+          <div class="bg-black/70 border-2 border-cyan-400 rounded-lg p-2 font-mono">
+            <div class="flex justify-between text-xs">
+              <span class="text-lime-300">LIVE: <strong id="spinner-rpm">0</strong> RPM</span>
+              <span class="text-pink-400">MAX: <strong id="spinner-max">0</strong></span>
+            </div>
+            <div id="spinner-rank" class="mt-1 text-sm font-black text-yellow-300 uppercase">
+              RANK: IDLE POTATO
+            </div>
+          </div>
+
+          <button id="spinner-boost-btn" class="chunky-btn w-full py-1.5 text-xs bg-cyan-400 text-black">
+            💨 TURBO FLICK (+RPM)
+          </button>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           WIDGET 7: MINI GLITCH GRAFFITI PAD
+           ==================================================================== -->
+      <section
+        id="widget-graffiti"
+        class="chaos-widget win95-box"
+        data-default-left="45"
+        data-default-top="955"
+        style="width: 440px; --tilt: -1.3deg; z-index: 11;"
+      >
+        <div class="win-titlebar" style="background: linear-gradient(90deg, #ff00cc, #ff6600); color: #fff;">
+          <span class="win-title-text">🎨 MS_GLITCH_PAINT_98.EXE</span>
+          <div class="win-controls">
+            <button class="win-btn" data-action="minimize" title="Minimize">_</button>
+          </div>
+        </div>
+        <div class="win-body space-y-2">
+          <!-- Brush Controls -->
+          <div class="flex flex-wrap items-center gap-1.5">
+            <button class="brush-mode-btn chunky-btn px-2 py-1 text-[11px] bg-cyan-300 text-black" data-mode="neon">✨ NEON</button>
+            <button class="brush-mode-btn chunky-btn px-2 py-1 text-[11px] bg-gradient-to-r from-pink-400 via-yellow-300 to-lime-400 text-black" data-mode="rainbow">🌈 RAINBOW</button>
+            <button class="brush-mode-btn chunky-btn px-2 py-1 text-[11px] bg-purple-600 text-white" data-mode="glitch">👾 GLITCH</button>
+            <button id="graffiti-stamp-btn" class="chunky-btn px-2 py-1 text-[11px] bg-yellow-300 text-black">🐸 STAMP</button>
+            <button id="graffiti-nuke-btn" class="chunky-btn px-2 py-1 text-[11px] bg-red-600 text-white ml-auto">☢️ NUKE</button>
+          </div>
+
+          <!-- HTML5 Drawing Canvas -->
+          <div class="border-4 border-inset border-gray-700 bg-[#0c0417] rounded overflow-hidden">
+            <canvas
+              id="graffiti-canvas"
+              width="400"
+              height="230"
+              class="w-full h-auto block cursor-crosshair"
+              style="touch-action: none;"
+            ></canvas>
+          </div>
+          <div class="flex justify-between items-center text-[11px] font-mono text-gray-800">
+            <span>Mode: <strong id="brush-mode-label">RAINBOW</strong></span>
+            <span>Draw with mouse or finger!</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           WIDGET 8: MYSTIC GLITCH TAROT ORACLE
+           ==================================================================== -->
+      <section
+        id="widget-tarot"
+        class="chaos-widget"
+        data-default-left="515"
+        data-default-top="870"
+        style="width: 345px; --tilt: 2.1deg; background: linear-gradient(170deg, #1b0036, #0a001a); z-index: 12;"
+      >
+        <div class="win-titlebar" style="background: linear-gradient(90deg, #5200a3, #ff00cc); color: #ffe600;">
+          <span class="win-title-text">🔮 MYSTIC_GLITCH_TAROT.DLL</span>
+          <div class="win-controls">
+            <button class="win-btn" data-action="minimize" title="Minimize">_</button>
+          </div>
+        </div>
+        <div class="win-body space-y-2.5">
+          <div class="tarot-scene" id="tarot-scene" title="Click card to draw a new destiny!">
+            <div class="tarot-card" id="tarot-card">
+              <!-- Card Back -->
+              <div class="tarot-face tarot-back">
+                <div class="text-5xl mb-2 animate-pulse">👁️✨</div>
+                <div class="font-mono font-black text-yellow-300 text-lg tracking-widest">GLITCH ORACLE</div>
+                <p class="text-xs text-cyan-200 mt-2 font-mono px-3">
+                  CLICK DECK TO CONSULT THE DIGITAL ETHER
+                </p>
+                <div class="mt-4 text-xs bg-black/70 border border-pink-400 px-3 py-1 rounded-full text-pink-300">
+                  ★ 8 ARCANA AVAILABLE ★
+                </div>
+              </div>
+
+              <!-- Card Front -->
+              <div class="tarot-face tarot-front">
+                <div id="tarot-numeral" class="text-[11px] font-mono text-yellow-300 tracking-widest">ARCANA 00</div>
+                <div id="tarot-art" class="text-5xl my-1.5 drop-shadow-[0_0_12px_#00f7ff]">♾️</div>
+                <h3 id="tarot-title" class="font-black text-base text-pink-400 tracking-wide uppercase">THE INFINITE LOOP</h3>
+                <p id="tarot-fortune" class="text-xs text-cyan-100 mt-2 leading-relaxed px-1">
+                  Your next great idea will strike at 2:47 AM. Hydrate before refactoring reality.
+                </p>
+                <div id="tarot-hz" class="mt-2.5 text-[10px] font-mono bg-black/70 text-lime-300 px-2 py-0.5 rounded border border-lime-400/50">
+                  LUCKY FREQUENCY: 432 Hz
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button id="tarot-draw-btn" class="chunky-btn w-full py-2 text-xs bg-gradient-to-r from-yellow-300 via-pink-400 to-cyan-300 text-black">
+            ✨ DRAW / FLIP GLITCH TAROT ✨
+          </button>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           WIDGET 9: 2007 FAKE SHOUTBOX / GUESTBOOK
+           ==================================================================== -->
+      <section
+        id="widget-shoutbox"
+        class="chaos-widget"
+        data-default-left="890"
+        data-default-top="875"
+        style="width: 455px; --tilt: -1.9deg; background: #140529; z-index: 13;"
+      >
+        <div class="win-titlebar" style="background: linear-gradient(90deg, #00f7ff, #ff00cc, #ffe600); color: #000;">
+          <span class="win-title-text">💬 2007_GUESTBOOK_SHOUTBOX.PHP</span>
+          <div class="win-controls">
+            <button class="win-btn" data-action="minimize" title="Minimize">_</button>
+          </div>
+        </div>
+        <div class="win-body space-y-2.5">
+          <div class="text-[11px] font-mono text-lime-300 flex justify-between">
+            <span>★ SIGN TRENT'S WALL!! (NO SPAM PLZ LOL)</span>
+            <span id="shout-count">5 posts</span>
+          </div>
+
+          <!-- Scrollable Neon Shout Feed -->
+          <div
+            id="shoutbox-messages"
+            class="h-48 overflow-y-auto bg-black/80 border-2 border-cyan-400 rounded-lg p-2.5 space-y-2 font-mono text-xs selectable"
+          >
+            <!-- Pre-filled via JS -->
+          </div>
+
+          <!-- Post Form -->
+          <form id="shoutbox-form" class="space-y-1.5">
+            <div class="flex gap-1.5">
+              <input
+                id="shout-name"
+                type="text"
+                maxlength="24"
+                placeholder="Handle (e.g. xX_Sk8r_Xx)"
+                class="w-2/5 bg-black border-2 border-pink-400 rounded px-2 py-1.5 text-xs text-yellow-300 font-mono focus:outline-none focus:border-cyan-300"
+              />
+              <input
+                id="shout-msg"
+                type="text"
+                maxlength="140"
+                placeholder="Drop a 2007 shout..."
+                required
+                class="flex-1 bg-black border-2 border-cyan-400 rounded px-2 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-lime-400"
+              />
+            </div>
+            <button type="submit" class="chunky-btn w-full py-1.5 text-xs bg-lime-400 text-black">
+              📨 POST TO GUESTBOOK WALL
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           BONUS MINI WIDGET: RETRO BADGE / STATUS STICKER CLUSTER
+           ==================================================================== -->
+      <section
+        id="widget-badges"
+        class="chaos-widget"
+        data-default-left="45"
+        data-default-top="1340"
+        style="width: 390px; --tilt: 1.7deg; background: #0c0c1d; z-index: 10;"
+      >
+        <div class="win-titlebar" style="background: #ffe600; color: #000;">
+          <span class="win-title-text">🏅 88x31_WEBRING_BADGES.GIF</span>
+          <div class="win-controls">
+            <button class="win-btn" data-action="minimize" title="Minimize">_</button>
+          </div>
+        </div>
+        <div class="win-body space-y-2">
+          <div class="flex flex-wrap gap-2 justify-center font-mono text-[10px] font-black">
+            <span class="px-2 py-1 bg-pink-600 border-2 border-white text-white shadow">MADE WITH SPAGHETTI JS</span>
+            <span class="px-2 py-1 bg-lime-400 border-2 border-black text-black shadow">ZERO ARTIFICIAL DYES</span>
+            <span class="px-2 py-1 bg-cyan-400 border-2 border-black text-black shadow">ONEWHEEL APPROVED</span>
+            <span class="px-2 py-1 bg-purple-700 border-2 border-yellow-300 text-yellow-300 shadow">SAG / TAURUS / GEMINI</span>
+            <span class="px-2 py-1 bg-orange-500 border-2 border-black text-black shadow">CAT BUTLER CERTIFIED</span>
+            <span class="px-2 py-1 bg-blue-700 border-2 border-cyan-300 text-white shadow">HOSTED ON VERCEL SOON™</span>
+          </div>
+          <div class="text-center text-[11px] font-mono text-gray-300 pt-1">
+            DVD Corner Hits Today: <strong id="dvd-corner-count" class="text-yellow-300">0</strong> &nbsp;|&nbsp; Floaties Popped: <strong id="floaty-pop-count" class="text-pink-400">0</strong>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       WIDGET 10: FIXED BOTTOM CHAOS TOOLBAR (DOCK)
+       ======================================================================== -->
+  <nav id="chaos-dock" aria-label="Chaos Controls Dock">
+    <button id="dock-bg-btn" class="dock-btn bg-pink-500 text-white">🎨 BG: ACID</button>
+    <button id="dock-float-btn" class="dock-btn bg-yellow-300 text-black">🦆 SPAWN DUCKS</button>
+    <button id="dock-crt-btn" class="dock-btn bg-cyan-300 text-black">📺 CRT: ON</button>
+    <button id="dock-sparkle-btn" class="dock-btn bg-lime-400 text-black">✨ SPARKLES: ON</button>
+    <button id="dock-mute-btn" class="dock-btn bg-purple-400 text-black">🔊 SFX: ON</button>
+    <button id="dock-tidy-btn" class="dock-btn bg-orange-400 text-black">🧹 TIDY UP</button>
+    <button id="dock-corp-btn" class="dock-btn bg-white text-black">👔 BORING CORPORATE MODE</button>
+  </nav>
+
+  <!-- ========================================================================
+       BORING CORPORATE MODE PRANK OVERLAY
+       ======================================================================== -->
+  <div id="corporate-mode" role="dialog" aria-label="Boring Corporate Mode">
+    <div class="max-w-xl text-left border border-gray-300 p-8 shadow-sm">
+      <h1 class="text-3xl font-bold mb-4">Trent Barker</h1>
+      <hr class="mb-4 border-gray-400" />
+      <p class="text-lg leading-relaxed mb-4">
+        Hello. I am Trent Barker. This is a very serious, professional website.
+      </p>
+      <p class="text-base leading-relaxed mb-4">
+        I leverage synergistic paradigms to optimize cross-functional deliverables, maintain strict compliance with beige color palettes, and definitely do not own synthesizers, 3D printers, or an opinionated flame point cat.
+      </p>
+      <ul class="list-disc pl-6 text-sm space-y-1 mb-6 text-gray-700">
+        <li>Core Competency: Standing near spreadsheets professionally</li>
+        <li>Favorite Font: Times New Roman (12pt, double-spaced)</li>
+        <li>Fun Permitted On This Page: 0.00%</li>
+      </ul>
+      <p class="text-xs text-gray-500">© 2026 Trent Barker Enterprises LLC. Please do not click anything interesting.</p>
+    </div>
+
+    <button id="escape-chaos-btn" class="escape-chaos-btn">
+      🚨 ESCAPE BACK TO CHAOS 🚨
+    </button>
+  </div>
+
+  <!-- ========================================================================
+       MAIN JAVASCRIPT ENGINE (SELF-CONTAINED, ZERO DEPENDENCIES)
+       ======================================================================== -->
+  <script>
+    (function () {
+      "use strict";
+
+      /* ======================================================================
+         1. WEB AUDIO API SOUND ENGINE (SAFE ON-DEMAND SYNTHESIS)
+         ====================================================================== */
+      const SoundEngine = {
+        ctx: null,
+        muted: false,
+
+        init() {
+          try {
+            if (!this.ctx) {
+              const AudioCtx = window.AudioContext || window.webkitAudioContext;
+              if (AudioCtx) {
+                this.ctx = new AudioCtx();
+              }
+            }
+            if (this.ctx && this.ctx.state === "suspended") {
+              this.ctx.resume();
+            }
+          } catch (e) {
+            // Silently ignore if audio context is unavailable
+          }
+        },
+
+        playTone(freq, duration = 0.2, type = "sawtooth", gainVal = 0.14) {
+          if (this.muted) return;
+          this.init();
+          if (!this.ctx) return;
+          try {
+            const now = this.ctx.currentTime;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, now);
+            gain.gain.setValueAtTime(gainVal, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now);
+            osc.stop(now + duration + 0.02);
+          } catch (e) {}
+        },
+
+        playSfx(name) {
+          if (this.muted) return;
+          this.init();
+          if (!this.ctx) return;
+          try {
+            const now = this.ctx.currentTime;
+            const ctx = this.ctx;
+
+            if (name === "laser") {
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.type = "sawtooth";
+              osc.frequency.setValueAtTime(1400, now);
+              osc.frequency.exponentialRampToValueAtTime(95, now + 0.26);
+              gain.gain.setValueAtTime(0.16, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+              osc.connect(gain).connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.29);
+            } else if (name === "boing") {
+              const osc = ctx.createOscillator();
+              const lfo = ctx.createOscillator();
+              const lfoGain = ctx.createGain();
+              const gain = ctx.createGain();
+              osc.type = "sine";
+              osc.frequency.setValueAtTime(160, now);
+              osc.frequency.exponentialRampToValueAtTime(520, now + 0.22);
+              osc.frequency.exponentialRampToValueAtTime(240, now + 0.45);
+              lfo.frequency.setValueAtTime(24, now);
+              lfoGain.gain.setValueAtTime(45, now);
+              lfo.connect(lfoGain).connect(osc.frequency);
+              gain.gain.setValueAtTime(0.22, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+              osc.connect(gain).connect(ctx.destination);
+              osc.start(now);
+              lfo.start(now);
+              osc.stop(now + 0.5);
+              lfo.stop(now + 0.5);
+            } else if (name === "glitch") {
+              for (let i = 0; i < 6; i++) {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = i % 2 === 0 ? "square" : "sawtooth";
+                osc.frequency.setValueAtTime(150 + Math.random() * 1900, now + i * 0.04);
+                gain.gain.setValueAtTime(0.11, now + i * 0.04);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.045);
+                osc.connect(gain).connect(ctx.destination);
+                osc.start(now + i * 0.04);
+                osc.stop(now + i * 0.04 + 0.05);
+              }
+            } else if (name === "ufo") {
+              const osc = ctx.createOscillator();
+              const lfo = ctx.createOscillator();
+              const lfoGain = ctx.createGain();
+              const gain = ctx.createGain();
+              osc.type = "triangle";
+              osc.frequency.setValueAtTime(640, now);
+              lfo.frequency.setValueAtTime(9, now);
+              lfoGain.gain.setValueAtTime(180, now);
+              lfo.connect(lfoGain).connect(osc.frequency);
+              gain.gain.setValueAtTime(0.16, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+              osc.connect(gain).connect(ctx.destination);
+              osc.start(now);
+              lfo.start(now);
+              osc.stop(now + 0.68);
+              lfo.stop(now + 0.68);
+            } else if (name === "meow") {
+              const osc = ctx.createOscillator();
+              const filter = ctx.createBiquadFilter();
+              const gain = ctx.createGain();
+              osc.type = "sawtooth";
+              osc.frequency.setValueAtTime(480, now);
+              osc.frequency.linearRampToValueAtTime(840, now + 0.14);
+              osc.frequency.exponentialRampToValueAtTime(420, now + 0.42);
+              filter.type = "bandpass";
+              filter.frequency.setValueAtTime(1350, now);
+              filter.Q.setValueAtTime(3.2, now);
+              gain.gain.setValueAtTime(0.01, now);
+              gain.gain.linearRampToValueAtTime(0.22, now + 0.06);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+              osc.connect(filter).connect(gain).connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.47);
+            } else if (name === "purr") {
+              const osc = ctx.createOscillator();
+              const lfo = ctx.createOscillator();
+              const lfoGain = ctx.createGain();
+              const gain = ctx.createGain();
+              osc.type = "triangle";
+              osc.frequency.setValueAtTime(74, now);
+              lfo.frequency.setValueAtTime(26, now);
+              lfoGain.gain.setValueAtTime(0.08, now);
+              gain.gain.setValueAtTime(0.11, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+              lfo.connect(lfoGain).connect(gain.gain);
+              osc.connect(gain).connect(ctx.destination);
+              osc.start(now);
+              lfo.start(now);
+              osc.stop(now + 0.38);
+              lfo.stop(now + 0.38);
+              // Cute soft chirp on top
+              this.playTone(720 + Math.random() * 220, 0.12, "sine", 0.07);
+            } else if (name === "sub") {
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.type = "sine";
+              osc.frequency.setValueAtTime(145, now);
+              osc.frequency.exponentialRampToValueAtTime(32, now + 0.72);
+              gain.gain.setValueAtTime(0.32, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.75);
+              osc.connect(gain).connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.78);
+            } else if (name === "chaos") {
+              const notes = [261.6, 311.1, 370.0, 466.2, 587.3, 740.0];
+              notes.forEach((f, idx) => {
+                this.playTone(f * (1 + (Math.random() - 0.5) * 0.04), 0.55, idx % 2 ? "sawtooth" : "square", 0.065);
+              });
+            } else if (name === "pop") {
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.type = "sine";
+              osc.frequency.setValueAtTime(300, now);
+              osc.frequency.exponentialRampToValueAtTime(920, now + 0.08);
+              gain.gain.setValueAtTime(0.15, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+              osc.connect(gain).connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.11);
+            } else if (name === "chime") {
+              [523.25, 659.25, 783.99, 1046.5].forEach((f, idx) => {
+                setTimeout(() => this.playTone(f, 0.25, "triangle", 0.09), idx * 55);
+              });
+            } else if (name === "kick") {
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.type = "sine";
+              osc.frequency.setValueAtTime(150, now);
+              osc.frequency.exponentialRampToValueAtTime(42, now + 0.13);
+              gain.gain.setValueAtTime(0.28, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+              osc.connect(gain).connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.16);
+            } else if (name === "hihat") {
+              // White noise short burst
+              const bufferSize = Math.floor(ctx.sampleRate * 0.045);
+              const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+              const data = buffer.getChannelData(0);
+              for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+              const noise = ctx.createBufferSource();
+              noise.buffer = buffer;
+              const filter = ctx.createBiquadFilter();
+              filter.type = "highpass";
+              filter.frequency.value = 7000;
+              const gain = ctx.createGain();
+              gain.gain.setValueAtTime(0.12, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+              noise.connect(filter).connect(gain).connect(ctx.destination);
+              noise.start(now);
+            } else if (name === "tick") {
+              this.playTone(900 + Math.random() * 350, 0.025, "square", 0.035);
+            }
+          } catch (e) {}
+        }
+      };
+
+      /* ======================================================================
+         2. CUSTOM SARCASTIC RETRO POPUPS (NEVER USES NATIVE alert())
+         ====================================================================== */
+      const toastContainer = document.getElementById("sarcastic-toast-container");
+
+      function showSarcasticPopup(title, message) {
+        const el = document.createElement("div");
+        el.className = "sarcastic-popup";
+        el.innerHTML = `
+          <div style="background:#000080; color:#fff; padding:4px 8px; display:flex; justify-content:space-between; align-items:center; font-weight:900; font-size:12px;">
+            <span>⚠️ ${title}</span>
+            <button style="background:#c0c0c0; color:#000; border:2px outset #fff; width:18px; height:18px; line-height:1; font-weight:900; cursor:pointer;">✕</button>
+          </div>
+          <div style="padding:10px; font-size:12px; line-height:1.4;">
+            <p style="margin:0 0 8px 0;">${message}</p>
+            <div style="text-align:right;">
+              <button class="ok-close" style="background:#c0c0c0; border:2px outset #fff; padding:2px 12px; font-weight:900; font-family:monospace; cursor:pointer;">OKAY FINE</button>
+            </div>
+          </div>
+        `;
+        const dismiss = () => el.remove();
+        el.querySelectorAll("button").forEach((b) => b.addEventListener("click", dismiss));
+        toastContainer.appendChild(el);
+
+        // Keep stack tidy
+        while (toastContainer.children.length > 3) {
+          toastContainer.firstChild.remove();
+        }
+        setTimeout(() => {
+          if (el.parentNode) el.remove();
+        }, 6200);
+      }
+
+      /* ======================================================================
+         3. DRAGGABLE & STACKABLE WINDOW MANAGER
+         ====================================================================== */
+      let topZ = 30;
+      const widgets = Array.from(document.querySelectorAll(".chaos-widget"));
+
+      function applyDefaultPositions() {
+        const isDesktop = window.innerWidth > 960;
+        const stageWidth = Math.min(window.innerWidth, 1480);
+        const scaleFactor = Math.min(1, stageWidth / 1400);
+
+        widgets.forEach((w, idx) => {
+          w.classList.remove("minimized");
+          if (isDesktop) {
+            const defL = parseFloat(w.dataset.defaultLeft || 20) * scaleFactor;
+            const defT = parseFloat(w.dataset.defaultTop || 20);
+            const maxLeft = Math.max(10, stageWidth - w.offsetWidth - 16);
+            w.style.left = Math.min(defL, maxLeft) + "px";
+            w.style.top = defT + "px";
+          } else {
+            w.style.left = "";
+            w.style.top = "";
+          }
+          w.style.zIndex = String(12 + idx);
+        });
+        topZ = 30;
+      }
+
+      widgets.forEach((widget) => {
+        // Bring to front on any interaction
+        widget.addEventListener("pointerdown", () => {
+          topZ += 1;
+          widget.style.zIndex = String(topZ);
+        });
+
+        // Titlebar Minimize & Wiggle buttons
+        widget.querySelectorAll(".win-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const action = btn.dataset.action;
+            if (action === "minimize") {
+              widget.classList.toggle("minimized");
+              SoundEngine.playSfx("pop");
+            } else if (action === "wiggle") {
+              widget.classList.remove("nuke-shaking");
+              void widget.offsetWidth;
+              widget.classList.add("nuke-shaking");
+              SoundEngine.playSfx("boing");
+            }
+          });
+        });
+
+        // Dragging by Titlebar (Desktop free-canvas drag)
+        const titlebar = widget.querySelector(".win-titlebar");
+        if (!titlebar) return;
+
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let origLeft = 0;
+        let origTop = 0;
+
+        titlebar.addEventListener("pointerdown", (e) => {
+          if (e.target.closest(".win-btn")) return;
+          if (window.innerWidth <= 960) return; // Mobile uses vertical collage scroll
+
+          isDragging = true;
+          topZ += 1;
+          widget.style.zIndex = String(topZ);
+          widget.classList.add("dragging");
+
+          startX = e.clientX;
+          startY = e.clientY;
+          origLeft = parseFloat(widget.style.left) || widget.offsetLeft;
+          origTop = parseFloat(widget.style.top) || widget.offsetTop;
+
+          try {
+            titlebar.setPointerCapture(e.pointerId);
+          } catch (err) {}
+        });
+
+        titlebar.addEventListener("pointermove", (e) => {
+          if (!isDragging) return;
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
+          const stage = document.getElementById("chaos-stage");
+          const maxL = Math.max(0, stage.clientWidth - 80);
+          const nextLeft = Math.max(-widget.offsetWidth + 90, Math.min(maxL, origLeft + dx));
+          const nextTop = Math.max(0, origTop + dy);
+          widget.style.left = nextLeft + "px";
+          widget.style.top = nextTop + "px";
+        });
+
+        const stopDrag = (e) => {
+          if (!isDragging) return;
+          isDragging = false;
+          widget.classList.remove("dragging");
+          try {
+            titlebar.releasePointerCapture(e.pointerId);
+          } catch (err) {}
+        };
+
+        titlebar.addEventListener("pointerup", stopDrag);
+        titlebar.addEventListener("pointercancel", stopDrag);
+      });
+
+      /* ======================================================================
+         4. WIDGET 1: HERO VISITOR COUNTER, GLITCH OVERDRIVE & DO NOT PRESS
+         ====================================================================== */
+      const visitorEl = document.getElementById("visitor-counter");
+      let visitorCount = 42069 + Math.floor(Math.random() * 888);
+
+      function renderVisitorCount() {
+        visitorEl.textContent = String(visitorCount).padStart(7, "0");
+      }
+      renderVisitorCount();
+
+      // Slowly tick up randomly
+      setInterval(() => {
+        if (Math.random() < 0.6) {
+          visitorCount += Math.floor(Math.random() * 4) + 1;
+          renderVisitorCount();
+        }
+      }, 2400);
+
+      // Clicking skyrockets visitor count
+      visitorEl.addEventListener("click", () => {
+        const boost = Math.floor(Math.random() * 9400) + 777;
+        visitorCount += boost;
+        renderVisitorCount();
+        SoundEngine.playTone(440 + Math.random() * 600, 0.09, "square", 0.1);
+        spawnConfettiBurst(
+          visitorEl.getBoundingClientRect().left + 60,
+          visitorEl.getBoundingClientRect().top + 10,
+          10
+        );
+      });
+
+      // Glitch Overdrive Slider
+      const glitchSlider = document.getElementById("glitch-slider");
+      const glitchStatus = document.getElementById("glitch-status");
+      const appWrapper = document.getElementById("app-wrapper");
+
+      function updateGlitchOverdrive(val) {
+        const pct = Number(val);
+        const root = document.documentElement.style;
+        root.setProperty("--glitch-level", (pct / 100).toFixed(2));
+        root.setProperty("--hue-shift", Math.round((pct / 100) * 320) + "deg");
+        root.setProperty("--rgb-offset", (1 + (pct / 100) * 9).toFixed(1) + "px");
+        root.setProperty("--crt-opacity", (0.08 + (pct / 100) * 0.55).toFixed(2));
+        root.setProperty("--jitter-px", pct > 62 ? ((pct - 60) / 11).toFixed(1) + "px" : "0px");
+
+        if (pct > 65) {
+          appWrapper.classList.add("glitch-jitter");
+        } else {
+          appWrapper.classList.remove("glitch-jitter");
+        }
+
+        let label = "CHILL & CRISP";
+        if (pct > 85) label = "REALITY MELTING!!";
+        else if (pct > 60) label = "DEEP FRIED JPEG";
+        else if (pct > 30) label = "SPICY CRT VIBES";
+        else if (pct > 10) label = "MILDLY VIBING";
+        glitchStatus.textContent = `${pct}% — ${label}`;
+      }
+
+      glitchSlider.addEventListener("input", (e) => {
+        updateGlitchOverdrive(e.target.value);
+      });
+      updateGlitchOverdrive(glitchSlider.value);
+
+      // Giant DO NOT PRESS Escalating Chaos Button
+      const doomBtn = document.getElementById("doom-btn");
+      const doomCountLabel = document.getElementById("doom-count-label");
+      let doomPresses = 0;
+
+      const doomMessages = [
+        ["HEY!!", "The button literally said DO NOT PRESS and you clicked it in 0.4 seconds."],
+        ["STOP THAT!", "Initiating emergency Emoji Rain Protocol. Hope you brought an umbrella."],
+        ["BARREL ROLL ENGAGED", "You broke gravity on trentbarker.com. Holding on for dear life..."],
+        ["SYNTH OVERLOAD", "Routing 400% pure chaos chords directly into the CSS mainframe!"],
+        ["OKAY YOU WIN", "Congratulations! You are officially certified as a Level 99 Chaos Goblin."]
+      ];
+
+      function triggerEmojiRain(count = 26) {
+        const emojis = ["🌀", "⚡", "🐱", "🐸", "🎹", "🦆", "✨", "🍕", "🛸", "🔥", "💾", "🌈"];
+        for (let i = 0; i < count; i++) {
+          const drop = document.createElement("div");
+          drop.className = "emoji-rain-drop";
+          drop.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          drop.style.left = Math.random() * 96 + "vw";
+          drop.style.animationDuration = 1.9 + Math.random() * 2.2 + "s";
+          drop.style.animationDelay = Math.random() * 0.65 + "s";
+          document.body.appendChild(drop);
+          setTimeout(() => drop.remove(), 4800);
+        }
+      }
+
+      doomBtn.addEventListener("click", () => {
+        doomPresses += 1;
+        const stage = (doomPresses - 1) % doomMessages.length;
+        const [title, msg] = doomMessages[stage];
+        doomCountLabel.textContent = `Chaos Level: ${doomPresses} (${stage === 4 ? "UNSTOPPABLE" : "MENACE"})`;
+
+        showSarcasticPopup(title, msg);
+
+        if (stage === 0) {
+          SoundEngine.playSfx("glitch");
+        } else if (stage === 1) {
+          SoundEngine.playSfx("laser");
+          triggerEmojiRain(28);
+        } else if (stage === 2) {
+          SoundEngine.playSfx("ufo");
+          appWrapper.classList.remove("barrel-roll");
+          void appWrapper.offsetWidth;
+          appWrapper.classList.add("barrel-roll");
+          setTimeout(() => appWrapper.classList.remove("barrel-roll"), 1050);
+        } else if (stage === 3) {
+          SoundEngine.playSfx("chaos");
+          triggerEmojiRain(34);
+          spawnFloatyToy();
+          spawnFloatyToy();
+        } else {
+          SoundEngine.playSfx("chime");
+          SoundEngine.playSfx("sub");
+          triggerEmojiRain(42);
+          spawnConfettiBurst(window.innerWidth / 2, window.innerHeight / 2, 40);
+        }
+      });
+
+      /* ======================================================================
+         5. WIDGET 2: "ALMOST ABOUT ME" LORE MACHINE
+         ====================================================================== */
+      const loreItems = [
+        { tag: "MATH BRAIN", text: "Knows too much calculus and still counts on fingers sometimes." },
+        { tag: "MAKER MODE", text: "Probably 3D-printing an unnecessarily complex fidget contraption right now." },
+        { tag: "GRAVITY DEFIER", text: "Carving down hills on one wheel at questionable speeds." },
+        { tag: "AUDIO LAB", text: "Routing weird signals into synthesizers strictly 'for science'." },
+        { tag: "CREDENTIALS", text: "Certified flame-point cat butler & cognitive science wizard." },
+        { tag: "BIG THREE ENERGY", text: "Sagittarius Sun / Taurus Moon / Gemini Rising chaotic-cozy alignment." },
+        { tag: "INGREDIENT CHECK", text: "Currently avoiding artificial dyes, bad vibes, and boring beige websites." },
+        { tag: "METAPHYSICS", text: "97% sure reality runs on spaghetti JavaScript held together with duct tape." },
+        { tag: "SIDE QUESTS", text: "Will open 47 browser tabs at 1:30 AM to research an obscure 1980s synth chip." },
+        { tag: "COFFEE THEORY", text: "Believes every complex problem is just a smaller problem wearing a trench coat." },
+        { tag: "DOMAIN FLEX", text: "Bought trentbarker.com and immediately chose intentional Y2K chaos over a resume." },
+        { tag: "FELINE TAX", text: "Has never successfully worked on a keyboard without a cat stepping on Ctrl+Alt+Del." },
+        { tag: "PHYSICS NOTE", text: "Can explain eigen-things while simultaneously forgetting where the keys went." },
+        { tag: "SECRET STAT", text: "Runs at 128 BPM internally. Powered by curiosity and neon pixels." }
+      ];
+
+      const loreTextEl = document.getElementById("lore-text");
+      const loreTagEl = document.getElementById("lore-tag");
+      const loreCounterEl = document.getElementById("lore-counter");
+      const spinLoreBtn = document.getElementById("spin-lore-btn");
+      const discoveredLore = new Set([0]);
+      let currentLoreIdx = 0;
+      let isSpinningLore = false;
+
+      spinLoreBtn.addEventListener("click", () => {
+        if (isSpinningLore) return;
+        isSpinningLore = true;
+        SoundEngine.playSfx("glitch");
+
+        let ticks = 0;
+        const maxTicks = 10;
+        const timer = setInterval(() => {
+          ticks++;
+          const tempIdx = Math.floor(Math.random() * loreItems.length);
+          loreTagEl.textContent = "🎰 ROLLING... " + loreItems[tempIdx].tag;
+          loreTextEl.textContent = loreItems[tempIdx].text;
+          SoundEngine.playSfx("tick");
+
+          if (ticks >= maxTicks) {
+            clearInterval(timer);
+            let nextIdx = Math.floor(Math.random() * loreItems.length);
+            if (nextIdx === currentLoreIdx) nextIdx = (nextIdx + 1) % loreItems.length;
+            currentLoreIdx = nextIdx;
+            discoveredLore.add(currentLoreIdx);
+
+            loreTagEl.textContent = "★ " + loreItems[currentLoreIdx].tag;
+            loreTextEl.textContent = loreItems[currentLoreIdx].text;
+            loreCounterEl.textContent = `${discoveredLore.size} / ${loreItems.length}`;
+            SoundEngine.playSfx("pop");
+            isSpinningLore = false;
+          }
+        }, 55);
+      });
+
+      /* ======================================================================
+         6. WIDGET 3: WEB AUDIO SYNTH, RAINBOW KEYS & 4-TRACK LOOP SEQUENCER
+         ====================================================================== */
+      const synthWaveSelect = document.getElementById("synth-wave");
+
+      // Soundboard Buttons
+      document.querySelectorAll("[data-sfx]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          SoundEngine.playSfx(btn.dataset.sfx);
+        });
+      });
+
+      // Rainbow 8-Note Keyboard
+      document.querySelectorAll(".synth-key").forEach((key) => {
+        const triggerNote = () => {
+          const freq = parseFloat(key.dataset.freq);
+          SoundEngine.playTone(freq, 0.32, synthWaveSelect.value, 0.16);
+          key.classList.add("active");
+          setTimeout(() => key.classList.remove("active"), 150);
+        };
+        key.addEventListener("pointerdown", triggerNote);
+      });
+
+      // 4-Track x 8-Step Mini Sequencer
+      const tracks = [
+        { name: "KICK",  pattern: [1, 0, 0, 0, 1, 0, 1, 0], play: () => SoundEngine.playSfx("kick") },
+        { name: "HAT",   pattern: [0, 1, 1, 1, 0, 1, 0, 1], play: () => SoundEngine.playSfx("hihat") },
+        { name: "BASS",  pattern: [1, 0, 1, 0, 0, 1, 0, 1], play: (step) => {
+          const bassNotes = [110, 110, 130.8, 98, 110, 146.8, 130.8, 164.8];
+          SoundEngine.playTone(bassNotes[step], 0.16, "sawtooth", 0.11);
+        }},
+        { name: "BLEEP", pattern: [0, 0, 0, 1, 0, 0, 1, 0], play: (step) => {
+          const bleeps = [523, 659, 784, 880, 1046, 784, 1174, 659];
+          SoundEngine.playTone(bleeps[step], 0.1, "square", 0.08);
+        }}
+      ];
+
+      const seqGrid = document.getElementById("sequencer-grid");
+      const loopToggleBtn = document.getElementById("loop-toggle-btn");
+      let seqPlaying = false;
+      let seqStep = 0;
+      let seqInterval = null;
+      const stepEls = [];
+
+      tracks.forEach((track, tIdx) => {
+        const row = document.createElement("div");
+        row.className = "grid grid-cols-9 gap-1 items-center";
+        const label = document.createElement("span");
+        label.className = "text-cyan-300 font-bold text-[10px]";
+        label.textContent = track.name;
+        row.appendChild(label);
+
+        stepEls[tIdx] = [];
+        track.pattern.forEach((val, sIdx) => {
+          const cell = document.createElement("button");
+          cell.type = "button";
+          cell.className = "seq-step" + (val ? " on" : "");
+          cell.title = `${track.name} Step ${sIdx + 1}`;
+          cell.addEventListener("click", () => {
+            track.pattern[sIdx] = track.pattern[sIdx] ? 0 : 1;
+            cell.classList.toggle("on", Boolean(track.pattern[sIdx]));
+            SoundEngine.playSfx("tick");
+          });
+          stepEls[tIdx].push(cell);
+          row.appendChild(cell);
+        });
+        seqGrid.appendChild(row);
+      });
+
+      function tickSequencer() {
+        stepEls.forEach((row) => row.forEach((el) => el.classList.remove("playing")));
+        tracks.forEach((track, tIdx) => {
+          const el = stepEls[tIdx][seqStep];
+          el.classList.add("playing");
+          if (track.pattern[seqStep]) {
+            track.play(seqStep);
+          }
+        });
+        seqStep = (seqStep + 1) % 8;
+      }
+
+      loopToggleBtn.addEventListener("click", () => {
+        SoundEngine.init();
+        seqPlaying = !seqPlaying;
+        if (seqPlaying) {
+          loopToggleBtn.textContent = "⏹ STOP LOOP";
+          loopToggleBtn.classList.remove("bg-lime-400");
+          loopToggleBtn.classList.add("bg-pink-500", "text-white");
+          seqStep = 0;
+          tickSequencer();
+          seqInterval = setInterval(tickSequencer, 234); // ~128 BPM 8th notes
+        } else {
+          loopToggleBtn.textContent = "▶ PLAY LOOP";
+          loopToggleBtn.classList.add("bg-lime-400");
+          loopToggleBtn.classList.remove("bg-pink-500", "text-white");
+          clearInterval(seqInterval);
+          stepEls.forEach((row) => row.forEach((el) => el.classList.remove("playing")));
+        }
+      });
+
+      /* ======================================================================
+         7. WIDGET 4: PET THE FLAME POINT CAT
+         ====================================================================== */
+      const catPetZone = document.getElementById("cat-pet-zone");
+      const catMoodText = document.getElementById("cat-mood-text");
+      const purrBar = document.getElementById("purr-bar");
+      const purrLevelEl = document.getElementById("purr-level");
+      const petCountLabel = document.getElementById("pet-count-label");
+      const eyesOpen = document.getElementById("cat-eyes-open");
+      const eyesHappy = document.getElementById("cat-eyes-happy");
+
+      const catMoods = [
+        "\"Judges your mouse movement.\"",
+        "\"Demands crunchy treats immediately.\"",
+        "\"Knocked your CSS off the table.\"",
+        "\"Purring at 60Hz resonant frequency!\"",
+        "\"Staring intensely at an invisible ghost.\"",
+        "\"Officially claimed your warm chair.\"",
+        "\"Toasted marshmallow mode: MAXIMUM.\"",
+        "\"Acceptable petting. Continue, human.\"",
+        "\"Walked across your keyboard: asdfjkl;;;\""
+      ];
+
+      let totalPets = 0;
+      let eyeTimeout = null;
+
+      catPetZone.addEventListener("click", (e) => {
+        totalPets += 1;
+        SoundEngine.playSfx("purr");
+
+        // Happy squint eyes briefly
+        eyesOpen.style.display = "none";
+        eyesHappy.style.display = "inline";
+        clearTimeout(eyeTimeout);
+        eyeTimeout = setTimeout(() => {
+          eyesOpen.style.display = "inline";
+          eyesHappy.style.display = "none";
+        }, 480);
+
+        // Update Purr Power gauge & Level
+        const level = Math.floor(totalPets / 7) + 1;
+        const pct = ((totalPets % 7) / 7) * 100 || 100;
+        purrLevelEl.textContent = `LVL ${level}`;
+        petCountLabel.textContent = `${totalPets} pet${totalPets === 1 ? "" : "s"}`;
+        purrBar.style.width = Math.max(12, pct) + "%";
+
+        // Update funny cat mood
+        catMoodText.textContent = catMoods[totalPets % catMoods.length];
+
+        // Spawn floating heart inside polaroid
+        const rect = catPetZone.getBoundingClientRect();
+        const heart = document.createElement("span");
+        heart.className = "cat-heart";
+        heart.textContent = ["💖", "🧡", "✨", "🐾", "💛"][Math.floor(Math.random() * 5)];
+        heart.style.left = (e.clientX - rect.left) + "px";
+        heart.style.top = (e.clientY - rect.top) + "px";
+        catPetZone.appendChild(heart);
+        setTimeout(() => heart.remove(), 900);
+      });
+
+      /* ======================================================================
+         8. WIDGET 5: COLLATZ CONJECTURE VISUALIZER ("3n+1 BRAIN MELTER")
+         ====================================================================== */
+      const collatzInput = document.getElementById("collatz-input");
+      const collatzCanvas = document.getElementById("collatz-canvas");
+      const collatzStepsEl = document.getElementById("collatz-steps");
+      const collatzPeakEl = document.getElementById("collatz-peak");
+      const collatzCommentEl = document.getElementById("collatz-comment");
+      const collatzCtx = collatzCanvas.getContext("2d");
+
+      let collatzAnimId = null;
+      let lastCollatzSeq = [27];
+
+      function computeCollatz(startN) {
+        let n = Math.max(1, Math.min(99999999, Math.floor(Number(startN) || 27)));
+        const seq = [n];
+        let safety = 0;
+        while (n !== 1 && safety < 600) {
+          n = n % 2 === 0 ? n / 2 : 3 * n + 1;
+          seq.push(n);
+          safety++;
+        }
+        return seq;
+      }
+
+      function drawCollatzAnimated(seq) {
+        lastCollatzSeq = seq;
+        if (collatzAnimId) cancelAnimationFrame(collatzAnimId);
+
+        const dpr = window.devicePixelRatio || 1;
+        const rect = collatzCanvas.getBoundingClientRect();
+        const w = Math.max(260, rect.width || 400);
+        const h = 175;
+        collatzCanvas.width = w * dpr;
+        collatzCanvas.height = h * dpr;
+        collatzCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const maxVal = Math.max(...seq, 2);
+        const peakIdx = seq.indexOf(maxVal);
+        const steps = seq.length - 1;
+
+        collatzStepsEl.textContent = steps.toLocaleString();
+        collatzPeakEl.textContent = maxVal.toLocaleString();
+
+        // Silly math commentary
+        if (seq[0] === 1) {
+          collatzCommentEl.textContent = "> Already at 1. Zero drama. Very demure, very mathematical.";
+        } else if (steps > 150) {
+          collatzCommentEl.textContent = `> WHOA!! ${steps} hailstone steps! Your CPU is sweating neon phosphor.`;
+        } else if (maxVal > 50000) {
+          collatzCommentEl.textContent = `> Peaked at ${maxVal.toLocaleString()} before plummeting back to 1. Classic 3n+1 rollercoaster!`;
+        } else if (seq[0] === 27) {
+          collatzCommentEl.textContent = "> Classic 27! Tiny number, massive 9,232-high spike. Mathematicians hate this one trick.";
+        } else {
+          collatzCommentEl.textContent = `> Started at ${seq[0].toLocaleString()}, bounced ${steps} times, still couldn't escape the 4-2-1 loop!`;
+        }
+
+        let progress = 1;
+        const stepIncrement = Math.max(1, Math.ceil(seq.length / 42));
+
+        function renderFrame() {
+          collatzCtx.fillStyle = "#030c04";
+          collatzCtx.fillRect(0, 0, w, h);
+
+          // Retro grid lines
+          collatzCtx.strokeStyle = "rgba(0, 255, 65, 0.14)";
+          collatzCtx.lineWidth = 1;
+          for (let gx = 0; gx < w; gx += 40) {
+            collatzCtx.beginPath();
+            collatzCtx.moveTo(gx, 0);
+            collatzCtx.lineTo(gx, h);
+            collatzCtx.stroke();
+          }
+          for (let gy = 0; gy < h; gy += 35) {
+            collatzCtx.beginPath();
+            collatzCtx.moveTo(0, gy);
+            collatzCtx.lineTo(w, gy);
+            collatzCtx.stroke();
+          }
+
+          const padX = 14;
+          const padY = 18;
+          const plotW = w - padX * 2;
+          const plotH = h - padY * 2;
+          const count = Math.min(progress, seq.length);
+
+          if (count > 1) {
+            collatzCtx.beginPath();
+            collatzCtx.strokeStyle = "#00ff41";
+            collatzCtx.lineWidth = 2.2;
+            collatzCtx.shadowColor = "#00ff41";
+            collatzCtx.shadowBlur = 8;
+
+            for (let i = 0; i < count; i++) {
+              const x = padX + (i / Math.max(1, seq.length - 1)) * plotW;
+              // Log-blended scaling so both massive spikes and lower steps stay crisp
+              const norm = Math.log10(seq[i] + 1) / Math.log10(maxVal + 1);
+              const y = h - padY - norm * plotH;
+              if (i === 0) collatzCtx.moveTo(x, y);
+              else collatzCtx.lineTo(x, y);
+            }
+            collatzCtx.stroke();
+            collatzCtx.shadowBlur = 0;
+
+            // Highlight peak dot once reached
+            if (count > peakIdx) {
+              const px = padX + (peakIdx / Math.max(1, seq.length - 1)) * plotW;
+              const py = padY;
+              collatzCtx.fillStyle = "#ffe600";
+              collatzCtx.beginPath();
+              collatzCtx.arc(px, py, 4.5, 0, Math.PI * 2);
+              collatzCtx.fill();
+              collatzCtx.font = "bold 10px monospace";
+              collatzCtx.fillText("PEAK", Math.min(px + 6, w - 38), py + 4);
+            }
+          }
+
+          if (progress < seq.length) {
+            progress += stepIncrement;
+            collatzAnimId = requestAnimationFrame(renderFrame);
+          }
+        }
+        renderFrame();
+      }
+
+      document.getElementById("collatz-run-btn").addEventListener("click", () => {
+        SoundEngine.playSfx("laser");
+        drawCollatzAnimated(computeCollatz(collatzInput.value));
+      });
+
+      document.getElementById("collatz-rand-btn").addEventListener("click", () => {
+        const randN = Math.floor(Math.random() * 9999) + 13;
+        collatzInput.value = randN;
+        SoundEngine.playSfx("glitch");
+        drawCollatzAnimated(computeCollatz(randN));
+      });
+
+      document.querySelectorAll(".collatz-preset").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          collatzInput.value = btn.dataset.n;
+          SoundEngine.playSfx("pop");
+          drawCollatzAnimated(computeCollatz(btn.dataset.n));
+        });
+      });
+
+      collatzInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          SoundEngine.playSfx("laser");
+          drawCollatzAnimated(computeCollatz(collatzInput.value));
+        }
+      });
+
+      /* ======================================================================
+         9. WIDGET 6: FIDGET SPINNER / CLICKER WHEEL
+         ====================================================================== */
+      const fidgetSvg = document.getElementById("fidget-svg");
+      const spinnerZone = document.getElementById("spinner-zone");
+      const spinnerRpmEl = document.getElementById("spinner-rpm");
+      const spinnerMaxEl = document.getElementById("spinner-max");
+      const spinnerRankEl = document.getElementById("spinner-rank");
+      const spinnerBoostBtn = document.getElementById("spinner-boost-btn");
+
+      let spinAngle = 0;
+      let spinVel = 0; // degrees per frame
+      let maxRpm = 0;
+
+      function boostSpinner(power = 18) {
+        spinVel = Math.min(185, spinVel + power);
+        SoundEngine.playSfx("tick");
+      }
+
+      spinnerZone.addEventListener("pointerdown", () => boostSpinner(22));
+      spinnerBoostBtn.addEventListener("click", () => {
+        boostSpinner(34);
+        SoundEngine.playTone(260 + Math.min(1200, spinVel * 8), 0.08, "triangle", 0.09);
+      });
+
+      function getSpinnerRank(rpm) {
+        if (rpm >= 1400) return "BREAKING SPACE-TIME!!";
+        if (rpm >= 950)  return "RELATIVISTIC TURBINE";
+        if (rpm >= 550)  return "ONEWHEEL DOWNHILL";
+        if (rpm >= 260)  return "3D PRINTER SPEED";
+        if (rpm >= 60)   return "WARMING UP";
+        return "IDLE POTATO";
+      }
+
+      function animateSpinner() {
+        if (spinVel > 0.08) {
+          spinAngle = (spinAngle + spinVel) % 360;
+          spinVel *= 0.991; // Smooth ceramic-bearing decay
+          fidgetSvg.style.transform = `rotate(${spinAngle.toFixed(1)}deg)`;
+        } else {
+          spinVel = 0;
+        }
+
+        const rpm = Math.round(spinVel * 10);
+        if (rpm > maxRpm) {
+          maxRpm = rpm;
+          spinnerMaxEl.textContent = maxRpm.toLocaleString();
+        }
+        spinnerRpmEl.textContent = rpm.toLocaleString();
+        spinnerRankEl.textContent = "RANK: " + getSpinnerRank(rpm);
+
+        requestAnimationFrame(animateSpinner);
+      }
+
+      /* ======================================================================
+         10. WIDGET 7: MINI GLITCH GRAFFITI PAD
+         ====================================================================== */
+      const graffitiCanvas = document.getElementById("graffiti-canvas");
+      const gCtx = graffitiCanvas.getContext("2d");
+      const brushModeLabel = document.getElementById("brush-mode-label");
+      const graffitiWidget = document.getElementById("widget-graffiti");
+
+      let brushMode = "rainbow";
+      let isDrawing = false;
+      let lastX = 0;
+      let lastY = 0;
+      let rainbowHue = 0;
+
+      function resetGraffitiCanvas() {
+        gCtx.fillStyle = "#0c0417";
+        gCtx.fillRect(0, 0, graffitiCanvas.width, graffitiCanvas.height);
+        // Subtle welcome doodle hint
+        gCtx.fillStyle = "rgba(0, 247, 255, 0.25)";
+        gCtx.font = "bold 14px monospace";
+        gCtx.fillText("// SCRIBBLE CHAOS HERE ->", 16, 26);
+      }
+      resetGraffitiCanvas();
+
+      function getCanvasPos(e) {
+        const rect = graffitiCanvas.getBoundingClientRect();
+        return {
+          x: ((e.clientX - rect.left) / rect.width) * graffitiCanvas.width,
+          y: ((e.clientY - rect.top) / rect.height) * graffitiCanvas.height
+        };
+      }
+
+      graffitiCanvas.addEventListener("pointerdown", (e) => {
+        isDrawing = true;
+        const pos = getCanvasPos(e);
+        lastX = pos.x;
+        lastY = pos.y;
+        try { graffitiCanvas.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+
+      graffitiCanvas.addEventListener("pointermove", (e) => {
+        if (!isDrawing) return;
+        const pos = getCanvasPos(e);
+
+        if (brushMode === "glitch") {
+          const colors = ["#ff00cc", "#00f7ff", "#39ff14", "#ffe600", "#ffffff"];
+          for (let i = 0; i < 4; i++) {
+            gCtx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+            const gx = pos.x + (Math.random() - 0.5) * 22;
+            const gy = pos.y + (Math.random() - 0.5) * 14;
+            gCtx.fillRect(gx, gy, 4 + Math.random() * 10, 3 + Math.random() * 5);
+          }
+        } else {
+          gCtx.beginPath();
+          gCtx.moveTo(lastX, lastY);
+          gCtx.lineTo(pos.x, pos.y);
+          gCtx.lineCap = "round";
+          gCtx.lineWidth = 5;
+
+          if (brushMode === "rainbow") {
+            rainbowHue = (rainbowHue + 9) % 360;
+            gCtx.strokeStyle = `hsl(${rainbowHue}, 100%, 60%)`;
+            gCtx.shadowColor = gCtx.strokeStyle;
+            gCtx.shadowBlur = 8;
+          } else {
+            gCtx.strokeStyle = "#00f7ff";
+            gCtx.shadowColor = "#00f7ff";
+            gCtx.shadowBlur = 14;
+          }
+          gCtx.stroke();
+          gCtx.shadowBlur = 0;
+        }
+
+        lastX = pos.x;
+        lastY = pos.y;
+      });
+
+      const endDraw = () => { isDrawing = false; };
+      graffitiCanvas.addEventListener("pointerup", endDraw);
+      graffitiCanvas.addEventListener("pointercancel", endDraw);
+
+      document.querySelectorAll(".brush-mode-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          brushMode = btn.dataset.mode;
+          brushModeLabel.textContent = brushMode.toUpperCase();
+          SoundEngine.playSfx("pop");
+        });
+      });
+
+      document.getElementById("graffiti-stamp-btn").addEventListener("click", () => {
+        const stamps = ["🐱", "🛸", "⚡", "🐸", "🌀", "🌈", "🔥", "🎹", "🦆", "👾", "💖", "🍕"];
+        const emoji = stamps[Math.floor(Math.random() * stamps.length)];
+        gCtx.font = "34px sans-serif";
+        const rx = 20 + Math.random() * (graffitiCanvas.width - 60);
+        const ry = 40 + Math.random() * (graffitiCanvas.height - 60);
+        gCtx.fillText(emoji, rx, ry);
+        SoundEngine.playSfx("boing");
+      });
+
+      document.getElementById("graffiti-nuke-btn").addEventListener("click", () => {
+        SoundEngine.playSfx("sub");
+        SoundEngine.playSfx("glitch");
+        graffitiWidget.classList.remove("nuke-shaking");
+        void graffitiWidget.offsetWidth;
+        graffitiWidget.classList.add("nuke-shaking");
+
+        // Flash bright white before clearing
+        gCtx.fillStyle = "#ffffff";
+        gCtx.fillRect(0, 0, graffitiCanvas.width, graffitiCanvas.height);
+        setTimeout(resetGraffitiCanvas, 130);
+      });
+
+      /* ======================================================================
+         11. WIDGET 8: MYSTIC GLITCH TAROT ORACLE
+         ====================================================================== */
+      const tarotDeck = [
+        { num: "ARCANA 00", art: "♾️", title: "THE INFINITE LOOP", fortune: "A brilliant 2:47 AM side project approaches. Remember to save before overclocking reality.", hz: "432 Hz" },
+        { num: "ARCANA 01", art: "🐱", title: "THE TOASTED CAT", fortune: "A tiny feline overlord approves your vibes today. Offer snacks to unlock secret luck.", hz: "60 Hz (Purr)" },
+        { num: "ARCANA 02", art: "🛞", title: "THE ONE-WHEELED PROPHET", fortune: "Lean forward into chaos, keep your balance, and carve smoothly past all bad energy.", hz: "528 Hz" },
+        { num: "ARCANA 03", art: "🎛️", title: "THE UNPLUGGED SYNTH", fortune: "If the signal sounds silent, check the cable before rewriting the universe's firmware.", hz: "110 Hz (Acid)" },
+        { num: "ARCANA 04", art: "💡", title: "THE 3AM IDEA", fortune: "Looks completely unhinged on paper; somehow becomes your coolest creation by Thursday.", hz: "888 Hz" },
+        { num: "ARCANA 05", art: "🧙‍♂️", title: "THE OVERCLOCKED WIZARD", fortune: "Your calculus intuition is peaking. Count on fingers proudly if it gets the right answer.", hz: "741 Hz" },
+        { num: "ARCANA 06", art: "👾", title: "THE ROGUE PIXEL", fortune: "Perfection is overrated. One slightly crooked neon pixel gives the entire canvas soul.", hz: "256 Hz" },
+        { num: "ARCANA 07", art: "🍝", title: "THE SPAGHETTI DOM", fortune: "Everything overlaps yet somehow works cleanly. Trust the intentional chaos.", hz: "314 Hz" }
+      ];
+
+      const tarotCard = document.getElementById("tarot-card");
+      const tarotScene = document.getElementById("tarot-scene");
+      const tarotDrawBtn = document.getElementById("tarot-draw-btn");
+      let tarotFlipped = false;
+      let lastTarotIdx = -1;
+
+      function drawTarotCard() {
+        SoundEngine.playSfx("chime");
+        if (tarotFlipped) {
+          // Flip back briefly, swap card, flip forward again!
+          tarotCard.classList.remove("flipped");
+          tarotFlipped = false;
+          setTimeout(() => {
+            populateRandomTarot();
+            tarotCard.classList.add("flipped");
+            tarotFlipped = true;
+          }, 320);
+        } else {
+          populateRandomTarot();
+          tarotCard.classList.add("flipped");
+          tarotFlipped = true;
+        }
+      }
+
+      function populateRandomTarot() {
+        let idx = Math.floor(Math.random() * tarotDeck.length);
+        if (idx === lastTarotIdx) idx = (idx + 1) % tarotDeck.length;
+        lastTarotIdx = idx;
+        const c = tarotDeck[idx];
+        document.getElementById("tarot-numeral").textContent = c.num;
+        document.getElementById("tarot-art").textContent = c.art;
+        document.getElementById("tarot-title").textContent = c.title;
+        document.getElementById("tarot-fortune").textContent = c.fortune;
+        document.getElementById("tarot-hz").textContent = "LUCKY FREQUENCY: " + c.hz;
+      }
+
+      tarotScene.addEventListener("click", drawTarotCard);
+      tarotDrawBtn.addEventListener("click", drawTarotCard);
+
+      /* ======================================================================
+         12. WIDGET 9: 2007 FAKE SHOUTBOX / GUESTBOOK
+         ====================================================================== */
+      const shoutContainer = document.getElementById("shoutbox-messages");
+      const shoutForm = document.getElementById("shoutbox-form");
+      const shoutNameInput = document.getElementById("shout-name");
+      const shoutMsgInput = document.getElementById("shout-msg");
+      const shoutCountEl = document.getElementById("shout-count");
+
+      const defaultShouts = [
+        { name: "xX_CalcWizard_Xx", avatar: "🧙", time: "10/14/07 2:19 AM", msg: "yo trent ur site melted my Windows XP browser lol 10/10!! add me to ur top 8!!" },
+        { name: "DefinitelyNotACat", avatar: "🐱", time: "11/02/07 4:04 PM", msg: "meow. i mean hello fellow human. please leave tuna near the 3D printer thx." },
+        { name: "Webmaster2007", avatar: "💾", time: "11/19/07 9:42 PM", msg: "EPIC marquee banner dude!! where did u get the glitch cursor sparkles??" },
+        { name: "SynthGoblin99", avatar: "🎹", time: "12/08/07 11:58 PM", msg: "just played the rainbow keyboard for 12 minutes straight. pure cinema." },
+        { name: "iCarlyFan_4ever", avatar: "⭐", time: "01/05/08 3:33 PM", msg: "THIS WEBSITE HAS RANDOM DANCING ENERGY!! *hits DO NOT PRESS 5 times*" }
+      ];
+
+      let shouts = [...defaultShouts];
+      try {
+        const saved = localStorage.getItem("trentbarker_shouts_v1");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) shouts = parsed;
+        }
+      } catch (e) {}
+
+      function escapeHtml(str) {
+        return str.replace(/[&<>"']/g, (ch) => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+        }[ch]));
+      }
+
+      function renderShouts() {
+        shoutContainer.innerHTML = "";
+        shouts.forEach((s) => {
+          const div = document.createElement("div");
+          div.className = "bg-[#1e0b38] border border-pink-500/40 rounded p-2";
+          div.innerHTML = `
+            <div class="flex justify-between items-center mb-0.5">
+              <span class="font-bold text-yellow-300">${s.avatar || "⚡"} ${escapeHtml(s.name)}</span>
+              <span class="text-[10px] text-cyan-300/80">${escapeHtml(s.time)}</span>
+            </div>
+            <div class="text-white leading-snug break-words">${escapeHtml(s.msg)}</div>
+          `;
+          shoutContainer.appendChild(div);
+        });
+        shoutCountEl.textContent = `${shouts.length} posts`;
+        shoutContainer.scrollTop = shoutContainer.scrollHeight;
+      }
+      renderShouts();
+
+      shoutForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const rawMsg = shoutMsgInput.value.trim();
+        if (!rawMsg) return;
+        const fallbackHandles = ["CyberGuest_07", "NeonNomad", "GlitchFriend", "xX_PixelFan_Xx", "AnonWizard"];
+        const name = shoutNameInput.value.trim() || fallbackHandles[Math.floor(Math.random() * fallbackHandles.length)];
+        const avatars = ["⚡", "🦆", "👾", "🌈", "🔥", "🛸", "🐸", "✨"];
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+        shouts.push({
+          name,
+          avatar: avatars[Math.floor(Math.random() * avatars.length)],
+          time: "TODAY " + timeStr,
+          msg: rawMsg
+        });
+
+        try {
+          localStorage.setItem("trentbarker_shouts_v1", JSON.stringify(shouts.slice(-30)));
+        } catch (err) {}
+
+        shoutMsgInput.value = "";
+        renderShouts();
+        SoundEngine.playSfx("chime");
+      });
+
+      /* ======================================================================
+         13. BOUNCING "TRENT" DVD LOGO + CORNER HIT CONFETTI
+         ====================================================================== */
+      const dvdEl = document.getElementById("dvd-logo");
+      const dvdCornerEl = document.getElementById("dvd-corner-count");
+      const dvdColors = ["#39ff14", "#ff00cc", "#00f7ff", "#ffe600", "#ff6600", "#b366ff"];
+      let dvdColorIdx = 0;
+      let dvdX = 90;
+      let dvdY = 120;
+      let dvdVx = 2.1;
+      let dvdVy = 1.75;
+      let dvdCornerHits = 0;
+
+      dvdEl.style.color = dvdColors[0];
+
+      dvdEl.addEventListener("click", () => {
+        dvdVx *= 1.25;
+        dvdVy *= 1.25;
+        // Clamp speed so it doesn't teleport out of existence
+        dvdVx = Math.sign(dvdVx) * Math.min(7.5, Math.abs(dvdVx));
+        dvdVy = Math.sign(dvdVy) * Math.min(7.5, Math.abs(dvdVy));
+        SoundEngine.playSfx("boing");
+        spawnConfettiBurst(dvdX + 45, dvdY + 20, 14);
+      });
+
+      function spawnConfettiBurst(cx, cy, count = 24) {
+        const colors = ["#ff00cc", "#39ff14", "#00f7ff", "#ffe600", "#ffffff", "#ff5500"];
+        for (let i = 0; i < count; i++) {
+          const p = document.createElement("div");
+          p.style.position = "fixed";
+          p.style.left = cx + "px";
+          p.style.top = cy + "px";
+          p.style.width = (5 + Math.random() * 6) + "px";
+          p.style.height = (5 + Math.random() * 6) + "px";
+          p.style.background = colors[Math.floor(Math.random() * colors.length)];
+          p.style.zIndex = "9400";
+          p.style.pointerEvents = "none";
+          p.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+          document.body.appendChild(p);
+
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 2.5 + Math.random() * 7;
+          let vx = Math.cos(angle) * speed;
+          let vy = Math.sin(angle) * speed - 2;
+          let x = 0;
+          let y = 0;
+          let life = 0;
+
+          function step() {
+            life++;
+            x += vx;
+            y += vy;
+            vy += 0.22;
+            p.style.transform = `translate(${x}px, ${y}px) rotate(${life * 14}deg)`;
+            p.style.opacity = String(Math.max(0, 1 - life / 46));
+            if (life < 46) requestAnimationFrame(step);
+            else p.remove();
+          }
+          requestAnimationFrame(step);
+        }
+      }
+
+      function animateDvd() {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const w = dvdEl.offsetWidth || 120;
+        const h = dvdEl.offsetHeight || 52;
+
+        dvdX += dvdVx;
+        dvdY += dvdVy;
+
+        let hitX = false;
+        let hitY = false;
+
+        if (dvdX <= 4) {
+          dvdX = 4;
+          dvdVx = Math.abs(dvdVx);
+          hitX = true;
+        } else if (dvdX + w >= vw - 4) {
+          dvdX = vw - w - 4;
+          dvdVx = -Math.abs(dvdVx);
+          hitX = true;
+        }
+
+        if (dvdY <= 4) {
+          dvdY = 4;
+          dvdVy = Math.abs(dvdVy);
+          hitY = true;
+        } else if (dvdY + h >= vh - 76) {
+          dvdY = vh - h - 76;
+          dvdVy = -Math.abs(dvdVy);
+          hitY = true;
+        }
+
+        if (hitX || hitY) {
+          dvdColorIdx = (dvdColorIdx + 1) % dvdColors.length;
+          dvdEl.style.color = dvdColors[dvdColorIdx];
+
+          // Celebrate true or near-corner hit!
+          const nearLeftRight = dvdX < 28 || dvdX + w > vw - 28;
+          const nearTopBot = dvdY < 28 || dvdY + h > vh - 102;
+          if ((hitX && hitY) || (nearLeftRight && nearTopBot)) {
+            dvdCornerHits += 1;
+            dvdCornerEl.textContent = String(dvdCornerHits);
+            spawnConfettiBurst(dvdX + w / 2, dvdY + h / 2, 34);
+            SoundEngine.playSfx("chime");
+            showSarcasticPopup("🎉 DVD CORNER HIT!!", "IT ACTUALLY HIT THE CORNER!! Everyone stop what you're doing and celebrate!");
+          }
+        }
+
+        dvdEl.style.transform = `translate3d(${dvdX}px, ${dvdY}px, 0)`;
+        requestAnimationFrame(animateDvd);
+      }
+
+      /* ======================================================================
+         14. SPARKLING / GLITCHY CURSOR TRAIL
+         ====================================================================== */
+      let sparklesEnabled = true;
+      let lastSparkleTime = 0;
+
+      window.addEventListener("pointermove", (e) => {
+        if (!sparklesEnabled) return;
+        const now = performance.now();
+        if (now - lastSparkleTime < 42) return;
+        lastSparkleTime = now;
+
+        const sp = document.createElement("span");
+        sp.className = "sparkle-particle";
+        const glyphs = ["✦", "✧", "★", "⚡", "▪", "✿", "♦"];
+        const colors = ["#39ff14", "#ff00cc", "#00f7ff", "#ffe600", "#ffffff"];
+        sp.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+        sp.style.color = colors[Math.floor(Math.random() * colors.length)];
+        sp.style.left = e.clientX + "px";
+        sp.style.top = e.clientY + "px";
+        sp.style.textShadow = `0 0 8px ${sp.style.color}`;
+        document.body.appendChild(sp);
+        setTimeout(() => sp.remove(), 660);
+      });
+
+      /* ======================================================================
+         15. SPAWNABLE BOUNCY FLOATIES (DUCKS / BUBBLES)
+         ====================================================================== */
+      let floatiesPopped = 0;
+      const floatyPopEl = document.getElementById("floaty-pop-count");
+      const activeFloaties = [];
+
+      function spawnFloatyToy() {
+        if (activeFloaties.length > 18) return; // Keep FPS butter-smooth
+        const toys = ["🦆", "🫧", "🐸", "🛸", "⭐", "🍩", "🎈"];
+        const el = document.createElement("div");
+        el.className = "floating-toy";
+        el.textContent = toys[Math.floor(Math.random() * toys.length)];
+        el.title = "Pop me!";
+        document.body.appendChild(el);
+
+        const obj = {
+          el,
+          x: 40 + Math.random() * (window.innerWidth - 100),
+          y: 80 + Math.random() * (window.innerHeight - 220),
+          vx: (Math.random() - 0.5) * 4.2 || 1.8,
+          vy: (Math.random() - 0.5) * 4.2 || -1.6
+        };
+        activeFloaties.push(obj);
+
+        el.addEventListener("pointerdown", () => {
+          SoundEngine.playSfx("pop");
+          floatiesPopped += 1;
+          floatyPopEl.textContent = String(floatiesPopped);
+          spawnConfettiBurst(obj.x + 18, obj.y + 18, 12);
+          el.remove();
+          const idx = activeFloaties.indexOf(obj);
+          if (idx >= 0) activeFloaties.splice(idx, 1);
+        });
+      }
+
+      function animateFloaties() {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        for (let i = 0; i < activeFloaties.length; i++) {
+          const f = activeFloaties[i];
+          f.x += f.vx;
+          f.y += f.vy;
+          if (f.x < 8 || f.x > vw - 48) f.vx *= -1;
+          if (f.y < 12 || f.y > vh - 110) f.vy *= -1;
+          f.el.style.transform = `translate3d(${f.x}px, ${f.y}px, 0)`;
+        }
+        requestAnimationFrame(animateFloaties);
+      }
+
+      /* ======================================================================
+         16. FIXED BOTTOM CHAOS TOOLBAR (DOCK) + BORING CORPORATE MODE
+         ====================================================================== */
+      const bgThemes = [
+        { cls: "bg-acid",   label: "BG: ACID" },
+        { cls: "bg-stars",  label: "BG: STARS" },
+        { cls: "bg-matrix", label: "BG: MATRIX" },
+        { cls: "bg-y2k",    label: "BG: HOT Y2K" },
+        { cls: "bg-win95",  label: "BG: WIN95" }
+      ];
+      let bgIdx = 0;
+
+      const dockBgBtn = document.getElementById("dock-bg-btn");
+      const dockFloatBtn = document.getElementById("dock-float-btn");
+      const dockCrtBtn = document.getElementById("dock-crt-btn");
+      const dockSparkleBtn = document.getElementById("dock-sparkle-btn");
+      const dockMuteBtn = document.getElementById("dock-mute-btn");
+      const dockTidyBtn = document.getElementById("dock-tidy-btn");
+      const dockCorpBtn = document.getElementById("dock-corp-btn");
+      const corporateOverlay = document.getElementById("corporate-mode");
+      const escapeChaosBtn = document.getElementById("escape-chaos-btn");
+
+      dockBgBtn.addEventListener("click", () => {
+        document.body.classList.remove(bgThemes[bgIdx].cls);
+        bgIdx = (bgIdx + 1) % bgThemes.length;
+        document.body.classList.add(bgThemes[bgIdx].cls);
+        dockBgBtn.textContent = "🎨 " + bgThemes[bgIdx].label;
+        SoundEngine.playSfx("pop");
+      });
+
+      dockFloatBtn.addEventListener("click", () => {
+        spawnFloatyToy();
+        spawnFloatyToy();
+        spawnFloatyToy();
+        SoundEngine.playSfx("boing");
+      });
+
+      let crtOn = true;
+      dockCrtBtn.addEventListener("click", () => {
+        crtOn = !crtOn;
+        document.body.classList.toggle("crt-off", !crtOn);
+        dockCrtBtn.textContent = crtOn ? "📺 CRT: ON" : "📺 CRT: OFF";
+        SoundEngine.playSfx("tick");
+      });
+
+      dockSparkleBtn.addEventListener("click", () => {
+        sparklesEnabled = !sparklesEnabled;
+        dockSparkleBtn.textContent = sparklesEnabled ? "✨ SPARKLES: ON" : "✨ SPARKLES: OFF";
+        SoundEngine.playSfx("tick");
+      });
+
+      dockMuteBtn.addEventListener("click", () => {
+        SoundEngine.muted = !SoundEngine.muted;
+        dockMuteBtn.textContent = SoundEngine.muted ? "🔇 SFX: MUTED" : "🔊 SFX: ON";
+        if (!SoundEngine.muted) SoundEngine.playSfx("pop");
+      });
+
+      dockTidyBtn.addEventListener("click", () => {
+        applyDefaultPositions();
+        SoundEngine.playSfx("chime");
+        showSarcasticPopup("🧹 TIDIED UP", "Windows restored to their scientifically calibrated 'intentional chaos' coordinates.");
+      });
+
+      // Boring Corporate Mode Prank!
+      dockCorpBtn.addEventListener("click", () => {
+        corporateOverlay.classList.add("active");
+        // Pause sequencer if playing for comedic silence
+        if (seqPlaying) loopToggleBtn.click();
+        SoundEngine.playTone(220, 0.18, "sine", 0.08);
+      });
+
+      escapeChaosBtn.addEventListener("click", () => {
+        corporateOverlay.classList.remove("active");
+        SoundEngine.playSfx("chaos");
+        triggerEmojiRain(20);
+        showSarcasticPopup("WHEW!!", "Thank goodness. That Times New Roman almost drained our collective soul.");
+      });
+
+      /* ======================================================================
+         17. INITIALIZATION ON WINDOW LOAD & RESIZE
+         ====================================================================== */
+      window.addEventListener("resize", () => {
+        applyDefaultPositions();
+        drawCollatzAnimated(lastCollatzSeq);
+      });
+
+      window.onload = function () {
+        applyDefaultPositions();
+        drawCollatzAnimated(computeCollatz(27));
+        animateSpinner();
+        animateDvd();
+        animateFloaties();
+      };
+    })();
+  </script>
+</body>
+</html>
