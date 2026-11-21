@@ -43,6 +43,13 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* Prevent mobile double-tap zoom when rapidly tapping music keys & buttons */
+    html, body, button, a, input, select,
+    .synth-key, .seq-step, .chunky-btn, .dock-btn, .win-btn,
+    .cat-svg-wrap, #spinner-zone, #visitor-counter, #dvd-logo {
+      touch-action: manipulation;
+    }
+
     /* Allow text selection inside inputs/textareas and shoutbox */
     input, textarea, .selectable {
       user-select: text;
@@ -178,36 +185,89 @@
     }
 
     /* ==========================================================================
-       4. BOUNCING DVD LOGO & MARQUEE TICKERS
+       4. BOUNCING JIM CARREY DVD LOGO, CORNER BG BANNER & MARQUEE TICKERS
        ========================================================================== */
-    #dvd-logo {
+    #corner-bg-banner {
       position: fixed;
-      top: 120px;
-      left: 80px;
-      z-index: 1;
-      pointer-events: auto;
-      cursor: pointer;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-family: Impact, "Arial Black", sans-serif;
-      font-size: 1.5rem;
-      letter-spacing: 2px;
-      border: 3px solid currentColor;
-      background: rgba(0, 0, 0, 0.48);
-      text-shadow: 2px 2px 0 #000;
-      box-shadow: 0 0 18px currentColor;
-      will-change: transform;
+      inset: 0;
+      z-index: 1; /* Above #bg-layer (0), strictly behind #app-wrapper (2) */
+      pointer-events: none;
       display: flex;
       flex-direction: column;
       align-items: center;
-      line-height: 1;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      opacity: 0;
+      transform: scale(0.86) rotate(-5deg);
+      transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1.25, 0.36, 1);
     }
 
-    #dvd-logo small {
-      font-family: "Courier New", monospace;
-      font-size: 0.62rem;
+    #corner-bg-banner.visible {
+      opacity: 0.92;
+      transform: scale(1) rotate(-4deg);
+    }
+
+    .corner-bg-title {
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(2.1rem, 7.5vw, 5.4rem);
+      line-height: 1.05;
       letter-spacing: 3px;
-      margin-top: 2px;
+      text-transform: uppercase;
+      color: #ffe600;
+      text-shadow:
+        -3px 0 #ff00cc,
+        3px 0 #00f7ff,
+        0 6px 0 #000,
+        0 0 28px rgba(255, 0, 204, 0.85);
+    }
+
+    .corner-bg-sub {
+      margin-top: 10px;
+      font-family: "Courier New", monospace;
+      font-weight: 900;
+      font-size: clamp(0.95rem, 2.6vw, 1.5rem);
+      letter-spacing: 3px;
+      color: #39ff14;
+      background: rgba(0, 0, 0, 0.62);
+      border: 2px solid #00f7ff;
+      border-radius: 999px;
+      padding: 4px 16px;
+      box-shadow: 0 0 18px rgba(0, 247, 255, 0.55);
+    }
+
+    #dvd-logo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 96px;
+      height: 96px;
+      z-index: 1;
+      pointer-events: auto;
+      cursor: pointer;
+      padding: 0;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 4px solid currentColor;
+      background: #000;
+      box-shadow: 0 0 18px currentColor;
+      will-change: transform;
+    }
+
+    #dvd-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+      #dvd-logo {
+        width: 78px;
+        height: 78px;
+      }
     }
 
     .marquee-strip {
@@ -659,16 +719,21 @@
 
     .floating-toy {
       position: fixed;
+      top: 0;
+      left: 0;
       z-index: 6000;
       font-size: 2.3rem;
+      line-height: 1;
       cursor: pointer;
+      touch-action: manipulation;
+      will-change: transform;
       filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.55));
       user-select: none;
-      transition: transform 0.12s;
+      transition: scale 0.12s ease;
     }
 
     .floating-toy:hover {
-      transform: scale(1.25);
+      scale: 1.25;
     }
 
     .emoji-rain-drop {
@@ -831,10 +896,20 @@
   <!-- Background Theme Layer -->
   <div id="bg-layer"></div>
 
-  <!-- Bouncing DVD-Style TRENT Logo -->
-  <div id="dvd-logo" title="Click me to boost speed! Celebrates corner hits!">
-    <span>TRENT</span>
-    <small>VIDEO 2007</small>
+  <!-- Background Corner-Hit Celebration Banner (Strictly Behind All Windows) -->
+  <div id="corner-bg-banner" aria-hidden="true">
+    <div id="corner-bg-text" class="corner-bg-title">ALRIGHTY THEN!! CORNER HIT!!</div>
+    <div id="corner-bg-sub" class="corner-bg-sub">JIM CARREY CORNER HIT #1</div>
+  </div>
+
+  <!-- Bouncing DVD-Style Jim Carrey Portrait -->
+  <div id="dvd-logo" title="Click Jim Carrey to boost speed! Celebrates corner hits!">
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Jim_Carrey_2008.jpg"
+      alt="Jim Carrey"
+      draggable="false"
+      onerror="if(!this.dataset.fb){this.dataset.fb='1';this.src='https://upload.wikimedia.org/wikipedia/commons/e/ec/Jim_Carrey.jpg';}else if(this.dataset.fb==='1'){this.dataset.fb='2';this.src='https://placehold.co/96x96/16002b/39ff14?text=JIM';}"
+    />
   </div>
 
   <!-- CRT Scanlines & Vignette Overlay -->
@@ -1444,7 +1519,7 @@
             <span class="px-2 py-1 bg-blue-700 border-2 border-cyan-300 text-white shadow">HOSTED ON VERCEL SOON™</span>
           </div>
           <div class="text-center text-[11px] font-mono text-gray-300 pt-1">
-            DVD Corner Hits Today: <strong id="dvd-corner-count" class="text-yellow-300">0</strong> &nbsp;|&nbsp; Floaties Popped: <strong id="floaty-pop-count" class="text-pink-400">0</strong>
+            Jim Carrey Corner Hits: <strong id="dvd-corner-count" class="text-yellow-300">0</strong> &nbsp;|&nbsp; Floaties Popped: <strong id="floaty-pop-count" class="text-pink-400">0</strong>
           </div>
         </div>
       </section>
@@ -2638,19 +2713,42 @@
       });
 
       /* ======================================================================
-         13. BOUNCING "TRENT" DVD LOGO + CORNER HIT CONFETTI
+         13. BOUNCING JIM CARREY DVD LOGO + BACKGROUND CORNER CELEBRATION
          ====================================================================== */
       const dvdEl = document.getElementById("dvd-logo");
       const dvdCornerEl = document.getElementById("dvd-corner-count");
+      const cornerBannerEl = document.getElementById("corner-bg-banner");
+      const cornerBannerTextEl = document.getElementById("corner-bg-text");
+      const cornerBannerSubEl = document.getElementById("corner-bg-sub");
+
       const dvdColors = ["#39ff14", "#ff00cc", "#00f7ff", "#ffe600", "#ff6600", "#b366ff"];
+      const cornerMessages = [
+        "ALRIGHTY THEN!! CORNER HIT!!",
+        "S-S-SMOKIN' CORNER HIT!!",
+        "JIM CARREY HIT THE CORNER!!",
+        "B-E-A-UTIFUL CORNER HIT!!"
+      ];
       let dvdColorIdx = 0;
       let dvdX = 90;
       let dvdY = 120;
       let dvdVx = 2.1;
       let dvdVy = 1.75;
       let dvdCornerHits = 0;
+      let lastCornerHitTime = 0;
+      let cornerBannerTimer = null;
 
       dvdEl.style.color = dvdColors[0];
+
+      function showCornerBgBanner(hitCount) {
+        const msg = cornerMessages[(hitCount - 1) % cornerMessages.length];
+        cornerBannerTextEl.textContent = msg;
+        cornerBannerSubEl.textContent = `JIM CARREY CORNER HIT #${hitCount}`;
+        cornerBannerEl.classList.add("visible");
+        clearTimeout(cornerBannerTimer);
+        cornerBannerTimer = setTimeout(() => {
+          cornerBannerEl.classList.remove("visible");
+        }, 3200);
+      }
 
       dvdEl.addEventListener("click", () => {
         dvdVx *= 1.25;
@@ -2659,7 +2757,11 @@
         dvdVx = Math.sign(dvdVx) * Math.min(7.5, Math.abs(dvdVx));
         dvdVy = Math.sign(dvdVy) * Math.min(7.5, Math.abs(dvdVy));
         SoundEngine.playSfx("boing");
-        spawnConfettiBurst(dvdX + 45, dvdY + 20, 14);
+        spawnConfettiBurst(
+          dvdX + (dvdEl.offsetWidth || 96) / 2,
+          dvdY + (dvdEl.offsetHeight || 96) / 2,
+          14
+        );
       });
 
       function spawnConfettiBurst(cx, cy, count = 24) {
@@ -2702,8 +2804,8 @@
       function animateDvd() {
         const vw = window.innerWidth;
         const vh = window.innerHeight;
-        const w = dvdEl.offsetWidth || 120;
-        const h = dvdEl.offsetHeight || 52;
+        const w = dvdEl.offsetWidth || 96;
+        const h = dvdEl.offsetHeight || 96;
 
         dvdX += dvdVx;
         dvdY += dvdVy;
@@ -2735,15 +2837,17 @@
           dvdColorIdx = (dvdColorIdx + 1) % dvdColors.length;
           dvdEl.style.color = dvdColors[dvdColorIdx];
 
-          // Celebrate true or near-corner hit!
+          // Celebrate true or near-corner hit behind windows with 1400ms cooldown
+          const now = performance.now();
           const nearLeftRight = dvdX < 28 || dvdX + w > vw - 28;
           const nearTopBot = dvdY < 28 || dvdY + h > vh - 102;
-          if ((hitX && hitY) || (nearLeftRight && nearTopBot)) {
+          if (((hitX && hitY) || (nearLeftRight && nearTopBot)) && now - lastCornerHitTime > 1400) {
+            lastCornerHitTime = now;
             dvdCornerHits += 1;
             dvdCornerEl.textContent = String(dvdCornerHits);
             spawnConfettiBurst(dvdX + w / 2, dvdY + h / 2, 34);
             SoundEngine.playSfx("chime");
-            showSarcasticPopup("🎉 DVD CORNER HIT!!", "IT ACTUALLY HIT THE CORNER!! Everyone stop what you're doing and celebrate!");
+            showCornerBgBanner(dvdCornerHits);
           }
         }
 
@@ -2783,22 +2887,28 @@
       const floatyPopEl = document.getElementById("floaty-pop-count");
       const activeFloaties = [];
 
-      function spawnFloatyToy() {
-        if (activeFloaties.length > 18) return; // Keep FPS butter-smooth
+      function spawnFloatyToy(forcedEmoji) {
+        // Recycle the oldest floaty if we hit the limit so the button always works
+        if (activeFloaties.length >= 24) {
+          const oldest = activeFloaties.shift();
+          if (oldest && oldest.el) oldest.el.remove();
+        }
+
         const toys = ["🦆", "🫧", "🐸", "🛸", "⭐", "🍩", "🎈"];
         const el = document.createElement("div");
         el.className = "floating-toy";
-        el.textContent = toys[Math.floor(Math.random() * toys.length)];
+        el.textContent = forcedEmoji || toys[Math.floor(Math.random() * toys.length)];
         el.title = "Pop me!";
         document.body.appendChild(el);
 
         const obj = {
           el,
-          x: 40 + Math.random() * (window.innerWidth - 100),
-          y: 80 + Math.random() * (window.innerHeight - 220),
-          vx: (Math.random() - 0.5) * 4.2 || 1.8,
-          vy: (Math.random() - 0.5) * 4.2 || -1.6
+          x: 24 + Math.random() * Math.max(40, window.innerWidth - 96),
+          y: 64 + Math.random() * Math.max(80, window.innerHeight - 200),
+          vx: (Math.random() < 0.5 ? -1 : 1) * (1.4 + Math.random() * 2.2),
+          vy: (Math.random() < 0.5 ? -1 : 1) * (1.2 + Math.random() * 2.0)
         };
+        el.style.transform = `translate3d(${obj.x}px, ${obj.y}px, 0)`;
         activeFloaties.push(obj);
 
         el.addEventListener("pointerdown", () => {
@@ -2857,8 +2967,8 @@
       });
 
       dockFloatBtn.addEventListener("click", () => {
-        spawnFloatyToy();
-        spawnFloatyToy();
+        spawnFloatyToy("🦆");
+        spawnFloatyToy("🦆");
         spawnFloatyToy();
         SoundEngine.playSfx("boing");
       });
