@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TRENTBARKER.COM /// WELCOME TO THE CHAOS ZONE</title>
+  <title>TRENTBARKER.COM /// UNLISTED BROADCAST</title>
   <!-- Tailwind CSS for utility layout & responsive helpers -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -12,7 +12,7 @@
        1. CSS VARIABLES & GLOBAL CHAOS CONTROLS
        ========================================================================== */
     :root {
-      --glitch-level: 0.18;       /* 0 to 1 controlled by Glitch Overdrive slider */
+      --glitch-level: 0.18;       /* 0 to 1 controlled by Signal Distortion slider */
       --hue-shift: 0deg;          /* Dynamic hue shift */
       --rgb-offset: 2px;          /* Chromatic aberration pixel offset */
       --crt-opacity: 0.22;        /* Scanline visibility */
@@ -46,7 +46,7 @@
     /* Prevent mobile double-tap zoom when rapidly tapping music keys & buttons */
     html, body, button, a, input, select,
     .synth-key, .seq-step, .chunky-btn, .dock-btn, .win-btn,
-    .cat-svg-wrap, #spinner-zone, #visitor-counter, #dvd-logo {
+    .cat-svg-wrap, #spinner-zone, #visitor-counter, #dvd-logo, .floating-toy {
       touch-action: manipulation;
     }
 
@@ -66,7 +66,7 @@
       transition: background 0.35s ease;
     }
 
-    /* Theme 0: Acid Checkerboard (Default Glitchcore/iCarly Fever Dream) */
+    /* Theme 0: Acid Checkerboard */
     body.bg-acid #bg-layer {
       background-color: #16002b;
       background-image:
@@ -106,7 +106,7 @@
       animation: bgScroll 12s linear infinite;
     }
 
-    /* Theme 3: Hot Pink 2007 Y2K iCarly Pop */
+    /* Theme 3: Hot Pink 2007 Y2K Pop */
     body.bg-y2k #bg-layer {
       background-color: #ff1493;
       background-image:
@@ -279,7 +279,7 @@
       white-space: nowrap;
       border-top: 3px dashed #000;
       border-bottom: 3px dashed #000;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.65);
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.65);
     }
 
     .marquee-strip.top-banner {
@@ -304,14 +304,14 @@
     }
 
     /* ==========================================================================
-       5. CHAOTIC COLLAGE STAGE & DRAGGABLE WINDOWS
+       5. CHAOTIC COLLAGE STAGE, DRAGGABLE WINDOWS & PROJECTS PORTAL
        ========================================================================== */
     #chaos-stage {
       position: relative;
       width: 100%;
       max-width: 1480px;
       margin: 14px auto 0;
-      min-height: 1840px;
+      min-height: 1580px;
       padding: 12px;
     }
 
@@ -420,6 +420,56 @@
       border-radius: 0 0 5px 5px;
     }
 
+    /* Bottom Projects Portal Deck */
+    #projects-portal {
+      position: relative;
+      z-index: 18;
+      width: calc(100% - 24px);
+      max-width: 900px;
+      margin: 24px auto 12px;
+      border: 4px solid #000;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #120029 0%, #061830 55%, #240026 100%);
+      box-shadow:
+        8px 8px 0 #000,
+        0 0 26px rgba(0, 247, 255, 0.35);
+      transform: rotate(-0.5deg);
+    }
+
+    .portal-link-btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 16px 18px;
+      text-decoration: none;
+      border: 3px solid #000;
+      border-radius: 12px;
+      box-shadow: 0 6px 0 #000, inset 0 2px 0 rgba(255, 255, 255, 0.5);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease;
+    }
+
+    .portal-link-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #000, 0 0 22px rgba(255, 230, 0, 0.45), inset 0 2px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .portal-link-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #000, inset 0 2px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .portal-link-syntony {
+      background: linear-gradient(135deg, #00f7ff 0%, #39ff14 100%);
+      color: #050510;
+    }
+
+    .portal-link-mining {
+      background: linear-gradient(135deg, #ffe600 0%, #ff6b00 65%, #ff00cc 100%);
+      color: #050510;
+    }
+
     /* Mobile / Tablet Adaptive Collage Mode */
     @media (max-width: 960px) {
       #chaos-stage {
@@ -438,6 +488,11 @@
         width: 100% !important;
         max-width: 540px !important;
         transform: rotate(calc(var(--tilt, 0deg) * 0.35));
+      }
+
+      #projects-portal {
+        max-width: 540px;
+        transform: rotate(0deg);
       }
     }
 
@@ -506,7 +561,7 @@
       font-family: "Arial Black", Impact, sans-serif;
       border: 3px solid #000;
       border-radius: 10px;
-      box-shadow: 0 4px 0 #000, inset 0 2px 0 rgba(255,255,255,0.55);
+      box-shadow: 0 4px 0 #000, inset 0 2px 0 rgba(255, 255, 255, 0.55);
       cursor: pointer;
       transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.1s ease;
       text-transform: uppercase;
@@ -519,7 +574,7 @@
 
     .chunky-btn:active {
       transform: translateY(3px);
-      box-shadow: 0 1px 0 #000, inset 0 2px 0 rgba(255,255,255,0.3);
+      box-shadow: 0 1px 0 #000, inset 0 2px 0 rgba(255, 255, 255, 0.3);
     }
 
     /* Giant DO NOT PRESS Button */
@@ -547,8 +602,8 @@
     }
 
     @keyframes pulseDanger {
-      0%, 100% { box-shadow: 0 7px 0 #4d0000, 0 0 16px rgba(255, 0, 0, 0.65), inset 0 3px 6px rgba(255,255,255,0.5); }
-      50% { box-shadow: 0 7px 0 #4d0000, 0 0 32px rgba(255, 40, 40, 1), inset 0 3px 6px rgba(255,255,255,0.7); }
+      0%, 100% { box-shadow: 0 7px 0 #4d0000, 0 0 16px rgba(255, 0, 0, 0.65), inset 0 3px 6px rgba(255, 255, 255, 0.5); }
+      50% { box-shadow: 0 7px 0 #4d0000, 0 0 32px rgba(255, 40, 40, 1), inset 0 3px 6px rgba(255, 255, 255, 0.7); }
     }
 
     /* LED Visitor Counter */
@@ -582,7 +637,7 @@
       padding: 10px 10px 14px;
       border-radius: 6px;
       border: 2px solid #ddd;
-      box-shadow: inset 0 0 8px rgba(0,0,0,0.08);
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.08);
     }
 
     .cat-svg-wrap {
@@ -723,12 +778,10 @@
       left: 0;
       z-index: 6000;
       font-size: 2.3rem;
-      line-height: 1;
       cursor: pointer;
-      touch-action: manipulation;
-      will-change: transform;
       filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.55));
       user-select: none;
+      will-change: transform;
       transition: scale 0.12s ease;
     }
 
@@ -752,7 +805,7 @@
       }
     }
 
-    /* Custom Sarcastic Retro Alerts (Replaces native alert()) */
+    /* Custom Retro Alerts (Replaces native alert()) */
     #sarcastic-toast-container {
       position: fixed;
       top: 64px;
@@ -774,7 +827,7 @@
       border-left: 3px solid #fff;
       border-right: 3px solid #404040;
       border-bottom: 3px solid #404040;
-      box-shadow: 6px 6px 0 rgba(0,0,0,0.8);
+      box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.8);
       font-family: "Courier New", monospace;
       animation: popIn 0.2s cubic-bezier(0.2, 1.4, 0.4, 1);
     }
@@ -898,7 +951,7 @@
 
   <!-- Background Corner-Hit Celebration Banner (Strictly Behind All Windows) -->
   <div id="corner-bg-banner" aria-hidden="true">
-    <div id="corner-bg-text" class="corner-bg-title">ALRIGHTY THEN!! CORNER HIT!!</div>
+    <div id="corner-bg-text" class="corner-bg-title">THE CORNER HAS BEEN CONTACTED BY JIM</div>
     <div id="corner-bg-sub" class="corner-bg-sub">JIM CARREY CORNER HIT #1</div>
   </div>
 
@@ -915,22 +968,22 @@
   <!-- CRT Scanlines & Vignette Overlay -->
   <div id="crt-overlay"></div>
 
-  <!-- Custom Retro Sarcastic Popup Container (No native alert()!) -->
+  <!-- Custom Retro Popup Container (No native alert()) -->
   <div id="sarcastic-toast-container"></div>
 
   <!-- Main Glitchable Application Wrapper -->
   <div id="app-wrapper">
-    <!-- Top Tilted Y2K / iCarly Marquee Ticker -->
+    <!-- Top Tilted Y2K Marquee Ticker -->
     <div class="marquee-strip top-banner">
       <div class="marquee-track">
-        ⚡ WELCOME TO TRENTBARKER.COM ⚡ BEST VIEWED ON A CRT MONITOR AT 3:14 AM ⚡ DRAG ANY WINDOW TO REARRANGE THE CHAOS ⚡ WARNING: HIGH LEVELS OF WHIMSY &amp; CALCULUS ⚡ PET THE FLAME POINT CAT FOR GOOD LUCK ⚡ NO ARTIFICIAL DYES WERE USED IN THIS HTML FILE ⚡ PRESSING THE RED BUTTON IS STRONGLY DISCOURAGED (DO IT) ⚡ &nbsp;&nbsp;&nbsp;
-        ⚡ WELCOME TO TRENTBARKER.COM ⚡ BEST VIEWED ON A CRT MONITOR AT 3:14 AM ⚡ DRAG ANY WINDOW TO REARRANGE THE CHAOS ⚡ WARNING: HIGH LEVELS OF WHIMSY &amp; CALCULUS ⚡ PET THE FLAME POINT CAT FOR GOOD LUCK ⚡ NO ARTIFICIAL DYES WERE USED IN THIS HTML FILE ⚡ PRESSING THE RED BUTTON IS STRONGLY DISCOURAGED (DO IT) ⚡ &nbsp;&nbsp;&nbsp;
+        ⚡ TRENTBARKER.COM ⚡ CURRENTLY BROADCASTING FROM AN UNVERIFIED ROOM ⚡ DRAG ANY WINDOW TO RELOCATE ITS FURNITURE ⚡ LOCAL GRAVITY IS RUNNING AT 94% TODAY ⚡ PLEASE DO NOT FEED THE METER ⚡ ALL COLORS ON THIS PAGE WERE SOURCED FROM A SINGLE BUCKET ⚡ PRESSING THE RED BUTTON WILL NOT FIX YOUR PRINTER ⚡ &nbsp;&nbsp;&nbsp;
+        ⚡ TRENTBARKER.COM ⚡ CURRENTLY BROADCASTING FROM AN UNVERIFIED ROOM ⚡ DRAG ANY WINDOW TO RELOCATE ITS FURNITURE ⚡ LOCAL GRAVITY IS RUNNING AT 94% TODAY ⚡ PLEASE DO NOT FEED THE METER ⚡ ALL COLORS ON THIS PAGE WERE SOURCED FROM A SINGLE BUCKET ⚡ PRESSING THE RED BUTTON WILL NOT FIX YOUR PRINTER ⚡ &nbsp;&nbsp;&nbsp;
       </div>
     </div>
 
     <!-- ======================================================================
          CHAOTIC OVERLAPPING COLLAGE WORKSPACE
-         All 9 interactive widgets live here and can be dragged & stacked!
+         All interactive widgets live here and can be dragged & stacked!
          ====================================================================== -->
     <main id="chaos-stage">
 
@@ -945,7 +998,7 @@
         style="width: 575px; --tilt: -1.6deg; background: linear-gradient(135deg, #1b003a 0%, #091338 55%, #2b0029 100%); z-index: 15;"
       >
         <div class="win-titlebar" style="background: linear-gradient(90deg, #ff00cc, #7000ff, #00f7ff); color: #fff;">
-          <span class="win-title-text">📺 TRENTBARKER.EXE — MAINFRAME_v2007.9</span>
+          <span class="win-title-text">📺 TRENTBARKER.EXE — CHANNEL_09</span>
           <div class="win-controls">
             <button class="win-btn" data-action="minimize" title="Minimize">_</button>
             <button class="win-btn" data-action="wiggle" title="Shake!">★</button>
@@ -953,34 +1006,34 @@
         </div>
         <div class="win-body text-center space-y-3">
           <div class="text-xs font-mono tracking-widest text-cyan-300 bg-black/60 py-1 px-2 rounded border border-cyan-400/50 inline-block">
-            ╔══ OFFICIAL UNOFFICIAL INTERNET ZONE ══╗
+            ╔══ PERMANENTLY TEMPORARY BROADCAST ══╗
           </div>
 
           <div>
             <h1 class="glitch-logo" data-text="TRENTBARKER.COM">TRENTBARKER.COM</h1>
             <p class="text-xs sm:text-sm text-yellow-300 font-bold mt-1">
-              ★ 100% Organic Chaos • Drag Any Titlebar • Click Everything ★
+              ★ All Buttons Are Real • Drag Any Titlebar • Do Not Lick The Monitor ★
             </p>
           </div>
 
-          <!-- Absurd Visitor Counter + Red Doom Button Row -->
+          <!-- Questionable Tally + Red Doom Button Row -->
           <div class="flex flex-wrap items-center justify-center gap-3 pt-1">
             <div class="bg-black/50 border-2 border-lime-400 rounded-lg p-2 flex flex-col items-center">
-              <span class="text-[10px] font-mono text-lime-300 uppercase tracking-wider">Absurd Visitor Counter (Click!)</span>
-              <div id="visitor-counter" class="led-counter mt-1" title="Click to inflate Trent's fame">0042069</div>
+              <span class="text-[10px] font-mono text-lime-300 uppercase tracking-wider">Questionable Tally (Click!)</span>
+              <div id="visitor-counter" class="led-counter mt-1" title="Click to add fictional people to the room">0019304</div>
             </div>
 
             <div class="flex flex-col items-center">
               <button id="doom-btn" class="red-doom-btn">🚨 DO NOT PRESS 🚨</button>
-              <span id="doom-count-label" class="text-[11px] font-mono text-pink-300 mt-1">Chaos Level: 0 (Behaving)</span>
+              <span id="doom-count-label" class="text-[11px] font-mono text-pink-300 mt-1">Presses: 0 (Compliant)</span>
             </div>
           </div>
 
-          <!-- Glitch Overdrive Slider -->
+          <!-- Signal Distortion Slider -->
           <div class="bg-black/65 border-2 border-pink-500 rounded-lg p-3 text-left">
             <div class="flex items-center justify-between text-xs font-mono font-bold mb-1">
-              <span class="text-pink-400">⚡ GLITCH OVERDRIVE</span>
-              <span id="glitch-status" class="text-lime-400">18% — MILDLY VIBING</span>
+              <span class="text-pink-400">⚡ SIGNAL DISTORTION</span>
+              <span id="glitch-status" class="text-lime-400">18% — MILDLY HUMMING</span>
             </div>
             <input
               id="glitch-slider"
@@ -991,17 +1044,17 @@
               class="w-full accent-pink-500 cursor-pointer h-3 rounded-lg"
             />
             <div class="flex justify-between text-[10px] font-mono text-gray-300 mt-1">
-              <span>Normal-ish</span>
-              <span>Spicy CRT</span>
-              <span>DEEP FRIED</span>
-              <span>REALITY MELT</span>
+              <span>Factory Paint</span>
+              <span>Slightly Damp</span>
+              <span>Wrong Wavelength</span>
+              <span>Television Soup</span>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ====================================================================
-           WIDGET 2: DRAGGABLE STICKY NOTE — "ALMOST ABOUT ME" LORE MACHINE
+           WIDGET 2: DRAGGABLE STICKY NOTE — "ALMOST ABOUT ME" BIO DISPENSER
            ==================================================================== -->
       <section
         id="widget-lore"
@@ -1018,17 +1071,17 @@
         </div>
         <div class="win-body space-y-3">
           <div class="flex items-center justify-between text-xs font-mono font-bold border-b-2 border-dashed border-black/40 pb-1">
-            <span>🎰 LORE SLOT MACHINE</span>
+            <span>🎰 BIOGRAPHICAL DISPENSER</span>
             <span id="lore-counter" class="bg-black text-yellow-300 px-2 py-0.5 rounded">1 / 14</span>
           </div>
 
           <!-- Slot Reel Window -->
           <div class="bg-white border-4 border-black rounded-lg p-3 min-h-[116px] flex flex-col justify-center shadow-inner relative overflow-hidden">
             <div class="text-[10px] font-mono font-bold text-pink-600 uppercase mb-1" id="lore-tag">
-              ★ FACT CHECK: PROBABLY TRUE
+              ★ ARITHMETIC
             </div>
             <p id="lore-text" class="text-base font-bold leading-snug text-black">
-              Knows too much calculus and still counts on fingers sometimes.
+              Understands differential equations well enough to distrust a standard wooden ruler.
             </p>
           </div>
 
@@ -1037,11 +1090,11 @@
               id="spin-lore-btn"
               class="chunky-btn flex-1 py-2.5 px-3 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 text-white text-sm"
             >
-              🎲 DISPENSE RANDOM LORE
+              🎲 PULL ANOTHER FACT
             </button>
           </div>
           <p class="text-[11px] font-mono text-black/80 text-center">
-            *Disclaimer: 84% biographical, 16% interdimensional static.
+            *Accuracy fluctuates depending on barometric pressure and nearby microwaves.
           </p>
         </div>
       </section>
@@ -1067,7 +1120,7 @@
             <div
               id="cat-pet-zone"
               class="cat-svg-wrap relative rounded bg-gradient-to-b from-sky-200 via-amber-50 to-orange-100 border-2 border-black/20 flex items-center justify-center py-2"
-              title="Click or tap to pet the toasted marshmallow cat!"
+              title="Click or tap to pet the cat"
             >
               <!-- Custom Inline SVG: Flame Point Siamese Cat -->
               <svg id="flame-cat-svg" viewBox="0 0 220 185" class="w-48 h-40">
@@ -1134,7 +1187,7 @@
 
             <div class="mt-2 text-center">
               <div class="font-bold text-sm text-orange-700" id="cat-mood-text">
-                "Judges your mouse movement."
+                "Staring directly through the drywall at 1998."
               </div>
             </div>
           </div>
@@ -1163,16 +1216,16 @@
         style="width: 495px; --tilt: 1.4deg; background: linear-gradient(160deg, #10002b 0%, #240046 100%); z-index: 14;"
       >
         <div class="win-titlebar" style="background: linear-gradient(90deg, #39ff14, #00f7ff); color: #000;">
-          <span class="win-title-text">🎹 TRENT'S WEIRD SIGNAL SYNTH &amp; SOUNDBOARD</span>
+          <span class="win-title-text">🎹 UNLICENSED NOISE BOX &amp; SYNTH</span>
           <div class="win-controls">
             <button class="win-btn" data-action="minimize" title="Minimize">_</button>
           </div>
         </div>
         <div class="win-body space-y-3">
-          <!-- 7 Absurd Soundboard Buttons -->
+          <!-- 7 Soundboard Buttons -->
           <div>
             <div class="text-[11px] font-mono text-cyan-300 mb-1.5 flex justify-between">
-              <span>🔊 ABSURD FX PAD (WEB AUDIO API)</span>
+              <span>🔊 BUTTONS THAT MAKE SOUNDS</span>
               <select id="synth-wave" class="bg-black text-lime-300 border border-lime-400 rounded px-1 text-[11px] cursor-pointer">
                 <option value="sawtooth">Wave: SAW</option>
                 <option value="square">Wave: SQUARE</option>
@@ -1187,7 +1240,7 @@
               <button class="chunky-btn py-2 px-1 text-xs bg-pink-500 text-white" data-sfx="ufo">🛸 UFO</button>
               <button class="chunky-btn py-2 px-1 text-xs bg-orange-400 text-black" data-sfx="meow">🐱 MEOW</button>
               <button class="chunky-btn py-2 px-1 text-xs bg-purple-500 text-white" data-sfx="sub">💣 SUB DROP</button>
-              <button class="chunky-btn py-2 px-1 text-xs bg-red-500 text-white col-span-3 sm:col-span-2" data-sfx="chaos">🌈 CHAOS CHORD</button>
+              <button class="chunky-btn py-2 px-1 text-xs bg-red-500 text-white col-span-3 sm:col-span-2" data-sfx="chaos">🌈 WRONG CHORD</button>
             </div>
           </div>
 
@@ -1209,7 +1262,7 @@
           <!-- 4-Track Mini Loop Sequencer -->
           <div class="bg-black/60 border-2 border-purple-500 rounded-lg p-2.5">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-mono text-yellow-300 font-bold">🎛️ 4-TRACK CHAOS LOOP (128 BPM)</span>
+              <span class="text-xs font-mono text-yellow-300 font-bold">🎛️ 4-TRACK BASEMENT LOOP (128 BPM)</span>
               <button id="loop-toggle-btn" class="chunky-btn px-3 py-1 text-xs bg-lime-400 text-black">
                 ▶ PLAY LOOP
               </button>
@@ -1259,13 +1312,13 @@
             <canvas id="collatz-canvas" class="w-full block" style="height: 175px;"></canvas>
           </div>
 
-          <!-- Stats & Silly Math Commentary -->
+          <!-- Stats & Commentary -->
           <div class="grid grid-cols-2 gap-2 text-xs bg-black/70 p-2 rounded border border-[#00ff41]/40">
             <div>STEPS TO 1: <strong id="collatz-steps" class="text-yellow-300">111</strong></div>
             <div>PEAK HEIGHT: <strong id="collatz-peak" class="text-cyan-300">9,232</strong></div>
           </div>
           <div id="collatz-comment" class="text-xs text-lime-200 bg-[#05290c] p-2 rounded border-l-4 border-[#00ff41]">
-            > Classic 27! Tiny number, massive roller coaster. Mathematicians are still sweating.
+            > Input 27 wandered up to 9,232 for no clear reason before returning to 1.
           </div>
         </div>
       </section>
@@ -1288,7 +1341,7 @@
         </div>
         <div class="win-body text-center space-y-2.5">
           <div class="text-xs font-mono text-cyan-300">
-            CLICK OR FLICK TO BREAK PHYSICS!
+            TAP REPEATEDLY TO GENERATE CENTRIFUGAL NONSENSE
           </div>
 
           <!-- Custom Neon SVG Fidget Spinner -->
@@ -1332,7 +1385,7 @@
               <span class="text-pink-400">MAX: <strong id="spinner-max">0</strong></span>
             </div>
             <div id="spinner-rank" class="mt-1 text-sm font-black text-yellow-300 uppercase">
-              RANK: IDLE POTATO
+              RANK: PARKING LOT ROCK
             </div>
           </div>
 
@@ -1386,7 +1439,7 @@
       </section>
 
       <!-- ====================================================================
-           WIDGET 8: MYSTIC GLITCH TAROT ORACLE
+           WIDGET 8: UNREQUESTED ORACLE / GLITCH TAROT
            ==================================================================== -->
       <section
         id="widget-tarot"
@@ -1402,43 +1455,43 @@
           </div>
         </div>
         <div class="win-body space-y-2.5">
-          <div class="tarot-scene" id="tarot-scene" title="Click card to draw a new destiny!">
+          <div class="tarot-scene" id="tarot-scene" title="Click card to draw a forecast!">
             <div class="tarot-card" id="tarot-card">
               <!-- Card Back -->
               <div class="tarot-face tarot-back">
                 <div class="text-5xl mb-2 animate-pulse">👁️✨</div>
-                <div class="font-mono font-black text-yellow-300 text-lg tracking-widest">GLITCH ORACLE</div>
+                <div class="font-mono font-black text-yellow-300 text-lg tracking-widest">UNREQUESTED ORACLE</div>
                 <p class="text-xs text-cyan-200 mt-2 font-mono px-3">
-                  CLICK DECK TO CONSULT THE DIGITAL ETHER
+                  CLICK DECK TO RECEIVE AN UNHELPFUL FORECAST
                 </p>
                 <div class="mt-4 text-xs bg-black/70 border border-pink-400 px-3 py-1 rounded-full text-pink-300">
-                  ★ 8 ARCANA AVAILABLE ★
+                  ★ 8 CARDS IN CIRCULATION ★
                 </div>
               </div>
 
               <!-- Card Front -->
               <div class="tarot-face tarot-front">
-                <div id="tarot-numeral" class="text-[11px] font-mono text-yellow-300 tracking-widest">ARCANA 00</div>
-                <div id="tarot-art" class="text-5xl my-1.5 drop-shadow-[0_0_12px_#00f7ff]">♾️</div>
-                <h3 id="tarot-title" class="font-black text-base text-pink-400 tracking-wide uppercase">THE INFINITE LOOP</h3>
+                <div id="tarot-numeral" class="text-[11px] font-mono text-yellow-300 tracking-widest">CARD 00</div>
+                <div id="tarot-art" class="text-5xl my-1.5 drop-shadow-[0_0_12px_#00f7ff]">🪑</div>
+                <h3 id="tarot-title" class="font-black text-base text-pink-400 tracking-wide uppercase">THE EXTRA CHAIR</h3>
                 <p id="tarot-fortune" class="text-xs text-cyan-100 mt-2 leading-relaxed px-1">
-                  Your next great idea will strike at 2:47 AM. Hydrate before refactoring reality.
+                  An object you misplaced in 2019 is currently sitting in plain sight pretending to be furniture.
                 </p>
                 <div id="tarot-hz" class="mt-2.5 text-[10px] font-mono bg-black/70 text-lime-300 px-2 py-0.5 rounded border border-lime-400/50">
-                  LUCKY FREQUENCY: 432 Hz
+                  ASSIGNED FREQUENCY: 432 Hz
                 </div>
               </div>
             </div>
           </div>
 
           <button id="tarot-draw-btn" class="chunky-btn w-full py-2 text-xs bg-gradient-to-r from-yellow-300 via-pink-400 to-cyan-300 text-black">
-            ✨ DRAW / FLIP GLITCH TAROT ✨
+            ✨ DRAW / FLIP CARD ✨
           </button>
         </div>
       </section>
 
       <!-- ====================================================================
-           WIDGET 9: 2007 FAKE SHOUTBOX / GUESTBOOK
+           WIDGET 9: 2007 GUESTBOOK SHOUTBOX (PERSISTENT LOGS)
            ==================================================================== -->
       <section
         id="widget-shoutbox"
@@ -1455,7 +1508,7 @@
         </div>
         <div class="win-body space-y-2.5">
           <div class="text-[11px] font-mono text-lime-300 flex justify-between">
-            <span>★ SIGN TRENT'S WALL!! (NO SPAM PLZ LOL)</span>
+            <span>★ PUBLIC WALL (LOGS SAVED PERMANENTLY)</span>
             <span id="shout-count">5 posts</span>
           </div>
 
@@ -1474,14 +1527,14 @@
                 id="shout-name"
                 type="text"
                 maxlength="24"
-                placeholder="Handle (e.g. xX_Sk8r_Xx)"
+                placeholder="Name (e.g. GaryFromFloor3)"
                 class="w-2/5 bg-black border-2 border-pink-400 rounded px-2 py-1.5 text-xs text-yellow-300 font-mono focus:outline-none focus:border-cyan-300"
               />
               <input
                 id="shout-msg"
                 type="text"
                 maxlength="140"
-                placeholder="Drop a 2007 shout..."
+                placeholder="Leave a confusing note..."
                 required
                 class="flex-1 bg-black border-2 border-cyan-400 rounded px-2 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-lime-400"
               />
@@ -1511,12 +1564,12 @@
         </div>
         <div class="win-body space-y-2">
           <div class="flex flex-wrap gap-2 justify-center font-mono text-[10px] font-black">
-            <span class="px-2 py-1 bg-pink-600 border-2 border-white text-white shadow">MADE WITH SPAGHETTI JS</span>
+            <span class="px-2 py-1 bg-pink-600 border-2 border-white text-white shadow">ASSEMBLED WITHOUT INSTRUCTIONS</span>
             <span class="px-2 py-1 bg-lime-400 border-2 border-black text-black shadow">ZERO ARTIFICIAL DYES</span>
-            <span class="px-2 py-1 bg-cyan-400 border-2 border-black text-black shadow">ONEWHEEL APPROVED</span>
-            <span class="px-2 py-1 bg-purple-700 border-2 border-yellow-300 text-yellow-300 shadow">SAG / TAURUS / GEMINI</span>
-            <span class="px-2 py-1 bg-orange-500 border-2 border-black text-black shadow">CAT BUTLER CERTIFIED</span>
-            <span class="px-2 py-1 bg-blue-700 border-2 border-cyan-300 text-white shadow">HOSTED ON VERCEL SOON™</span>
+            <span class="px-2 py-1 bg-cyan-400 border-2 border-black text-black shadow">ONE-WHEEL COMPLIANT</span>
+            <span class="px-2 py-1 bg-purple-700 border-2 border-yellow-300 text-yellow-300 shadow">CERTIFIED LOUD</span>
+            <span class="px-2 py-1 bg-orange-500 border-2 border-black text-black shadow">CAT-ADJACENT</span>
+            <span class="px-2 py-1 bg-blue-700 border-2 border-cyan-300 text-white shadow">LIVE ON TRENTBARKER.COM</span>
           </div>
           <div class="text-center text-[11px] font-mono text-gray-300 pt-1">
             Jim Carrey Corner Hits: <strong id="dvd-corner-count" class="text-yellow-300">0</strong> &nbsp;|&nbsp; Floaties Popped: <strong id="floaty-pop-count" class="text-pink-400">0</strong>
@@ -1525,6 +1578,84 @@
       </section>
 
     </main>
+
+    <!-- ======================================================================
+         OTHER PROJECTS & SITES PORTAL DECK (BOTTOM LINKS)
+         ====================================================================== -->
+    <footer id="projects-portal" aria-label="Trent Barker's Other Sites and Projects">
+      <div class="win-titlebar" style="background: linear-gradient(90deg, #ffe600, #39ff14, #00f7ff, #ff00cc); color: #000; cursor: default;">
+        <span class="win-title-text">🌐 TRENT'S_OTHER_SITES_&_PROJECTS.URL — EXTERNAL PORTALS</span>
+        <span class="font-mono text-[11px] font-black bg-black text-lime-300 px-2 py-0.5 rounded">2 LIVE SITES</span>
+      </div>
+      <div class="win-body space-y-3">
+        <div class="text-center">
+          <h2 class="font-black text-lg sm:text-xl tracking-wide text-yellow-300 uppercase" style="font-family: Impact, 'Arial Black', sans-serif; text-shadow: 2px 2px 0 #000;">
+            🚪 VISIT MY OTHER SITES &amp; ACTUAL PROJECTS 🚪
+          </h2>
+          <p class="text-xs font-mono text-cyan-200 mt-0.5">
+            These links open separate real web apps built &amp; hosted on subdomains of trentbarker.com
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Project 1: Syntony -->
+          <a
+            href="https://syntony.trentbarker.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="portal-link-btn portal-link-syntony"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[10px] font-mono font-black bg-black text-cyan-300 px-2 py-0.5 rounded uppercase">
+                OTHER PROJECT SITE
+              </span>
+              <span class="text-xs font-mono font-black bg-white/80 border-2 border-black px-2 py-0.5 rounded">
+                OPEN ↗
+              </span>
+            </div>
+            <div>
+              <div class="text-xl sm:text-2xl font-black tracking-wide uppercase" style="font-family: Impact, 'Arial Black', sans-serif;">
+                🌊 SYNTONY
+              </div>
+              <div class="text-sm font-bold leading-snug mt-0.5">
+                De-escalation Engine — calm, structured conflict &amp; communication tool.
+              </div>
+            </div>
+            <div class="text-xs font-mono font-black bg-black/85 text-lime-300 px-2.5 py-1 rounded border border-black inline-block self-start">
+              https://syntony.trentbarker.com
+            </div>
+          </a>
+
+          <!-- Project 2: Manual Bitcoin Miner -->
+          <a
+            href="https://mining.trentbarker.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="portal-link-btn portal-link-mining"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[10px] font-mono font-black bg-black text-yellow-300 px-2 py-0.5 rounded uppercase">
+                OTHER PROJECT SITE
+              </span>
+              <span class="text-xs font-mono font-black bg-white/80 border-2 border-black px-2 py-0.5 rounded">
+                OPEN ↗
+              </span>
+            </div>
+            <div>
+              <div class="text-xl sm:text-2xl font-black tracking-wide uppercase" style="font-family: Impact, 'Arial Black', sans-serif;">
+                ⛏️ MANUAL BITCOIN MINER
+              </div>
+              <div class="text-sm font-bold leading-snug mt-0.5">
+                Manual Bitcoin Miner — hash blocks by hand like a determined pioneer.
+              </div>
+            </div>
+            <div class="text-xs font-mono font-black bg-black/85 text-yellow-300 px-2.5 py-1 rounded border border-black inline-block self-start">
+              https://mining.trentbarker.com
+            </div>
+          </a>
+        </div>
+      </div>
+    </footer>
   </div>
 
   <!-- ========================================================================
@@ -1555,8 +1686,8 @@
       </p>
       <ul class="list-disc pl-6 text-sm space-y-1 mb-6 text-gray-700">
         <li>Core Competency: Standing near spreadsheets professionally</li>
-        <li>Favorite Font: Times New Roman (12pt, double-spaced)</li>
-        <li>Fun Permitted On This Page: 0.00%</li>
+        <li>Primary Beverage: Room-Temperature Water (Unflavored)</li>
+        <li>Recreational Color Allowance: 0.00%</li>
       </ul>
       <p class="text-xs text-gray-500">© 2026 Trent Barker Enterprises LLC. Please do not click anything interesting.</p>
     </div>
@@ -1716,7 +1847,7 @@
               lfo.start(now);
               osc.stop(now + 0.38);
               lfo.stop(now + 0.38);
-              // Cute soft chirp on top
+              // Soft chirp on top
               this.playTone(720 + Math.random() * 220, 0.12, "sine", 0.07);
             } else if (name === "sub") {
               const osc = ctx.createOscillator();
@@ -1761,7 +1892,6 @@
               osc.start(now);
               osc.stop(now + 0.16);
             } else if (name === "hihat") {
-              // White noise short burst
               const bufferSize = Math.floor(ctx.sampleRate * 0.045);
               const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
               const data = buffer.getChannelData(0);
@@ -1784,7 +1914,7 @@
       };
 
       /* ======================================================================
-         2. CUSTOM SARCASTIC RETRO POPUPS (NEVER USES NATIVE alert())
+         2. CUSTOM RETRO POPUPS (NEVER USES NATIVE alert())
          ====================================================================== */
       const toastContainer = document.getElementById("sarcastic-toast-container");
 
@@ -1807,7 +1937,6 @@
         el.querySelectorAll("button").forEach((b) => b.addEventListener("click", dismiss));
         toastContainer.appendChild(el);
 
-        // Keep stack tidy
         while (toastContainer.children.length > 3) {
           toastContainer.firstChild.remove();
         }
@@ -1845,13 +1974,11 @@
       }
 
       widgets.forEach((widget) => {
-        // Bring to front on any interaction
         widget.addEventListener("pointerdown", () => {
           topZ += 1;
           widget.style.zIndex = String(topZ);
         });
 
-        // Titlebar Minimize & Wiggle buttons
         widget.querySelectorAll(".win-btn").forEach((btn) => {
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -1868,7 +1995,6 @@
           });
         });
 
-        // Dragging by Titlebar (Desktop free-canvas drag)
         const titlebar = widget.querySelector(".win-titlebar");
         if (!titlebar) return;
 
@@ -1880,7 +2006,7 @@
 
         titlebar.addEventListener("pointerdown", (e) => {
           if (e.target.closest(".win-btn")) return;
-          if (window.innerWidth <= 960) return; // Mobile uses vertical collage scroll
+          if (window.innerWidth <= 960) return;
 
           isDragging = true;
           topZ += 1;
@@ -1923,17 +2049,16 @@
       });
 
       /* ======================================================================
-         4. WIDGET 1: HERO VISITOR COUNTER, GLITCH OVERDRIVE & DO NOT PRESS
+         4. WIDGET 1: HERO VISITOR COUNTER, SIGNAL DISTORTION & DO NOT PRESS
          ====================================================================== */
       const visitorEl = document.getElementById("visitor-counter");
-      let visitorCount = 42069 + Math.floor(Math.random() * 888);
+      let visitorCount = 19304 + Math.floor(Math.random() * 612);
 
       function renderVisitorCount() {
         visitorEl.textContent = String(visitorCount).padStart(7, "0");
       }
       renderVisitorCount();
 
-      // Slowly tick up randomly
       setInterval(() => {
         if (Math.random() < 0.6) {
           visitorCount += Math.floor(Math.random() * 4) + 1;
@@ -1941,7 +2066,6 @@
         }
       }, 2400);
 
-      // Clicking skyrockets visitor count
       visitorEl.addEventListener("click", () => {
         const boost = Math.floor(Math.random() * 9400) + 777;
         visitorCount += boost;
@@ -1954,7 +2078,7 @@
         );
       });
 
-      // Glitch Overdrive Slider
+      // Signal Distortion Slider
       const glitchSlider = document.getElementById("glitch-slider");
       const glitchStatus = document.getElementById("glitch-status");
       const appWrapper = document.getElementById("app-wrapper");
@@ -1974,11 +2098,11 @@
           appWrapper.classList.remove("glitch-jitter");
         }
 
-        let label = "CHILL & CRISP";
-        if (pct > 85) label = "REALITY MELTING!!";
-        else if (pct > 60) label = "DEEP FRIED JPEG";
-        else if (pct > 30) label = "SPICY CRT VIBES";
-        else if (pct > 10) label = "MILDLY VIBING";
+        let label = "DRY & LEGAL";
+        if (pct > 85) label = "TELEVISION SOUP";
+        else if (pct > 60) label = "WARM CARDBOARD";
+        else if (pct > 30) label = "UNUSUAL TINT";
+        else if (pct > 10) label = "MILDLY HUMMING";
         glitchStatus.textContent = `${pct}% — ${label}`;
       }
 
@@ -1993,11 +2117,11 @@
       let doomPresses = 0;
 
       const doomMessages = [
-        ["HEY!!", "The button literally said DO NOT PRESS and you clicked it in 0.4 seconds."],
-        ["STOP THAT!", "Initiating emergency Emoji Rain Protocol. Hope you brought an umbrella."],
-        ["BARREL ROLL ENGAGED", "You broke gravity on trentbarker.com. Holding on for dear life..."],
-        ["SYNTH OVERLOAD", "Routing 400% pure chaos chords directly into the CSS mainframe!"],
-        ["OKAY YOU WIN", "Congratulations! You are officially certified as a Level 99 Chaos Goblin."]
+        ["INCIDENT LOG #01", "A small bell rang inside an empty warehouse in Nebraska because of what you just did."],
+        ["WEATHER ADVISORY", "Precipitation of unrelated household icons has begun. Please tilt your chair 4 degrees left."],
+        ["ORIENTATION ERROR", "The floor has briefly relocated to the ceiling. Remain seated until the drywall settles."],
+        ["ACOUSTIC LEAK", "Seven unauthorized frequencies just escaped the basement and are now loose in the hallway."],
+        ["CERTIFICATE ISSUED", "You have pressed the button enough times to legally own a very small invisible spoon."]
       ];
 
       function triggerEmojiRain(count = 26) {
@@ -2018,7 +2142,7 @@
         doomPresses += 1;
         const stage = (doomPresses - 1) % doomMessages.length;
         const [title, msg] = doomMessages[stage];
-        doomCountLabel.textContent = `Chaos Level: ${doomPresses} (${stage === 4 ? "UNSTOPPABLE" : "MENACE"})`;
+        doomCountLabel.textContent = `Presses: ${doomPresses} (${stage === 4 ? "BEYOND HELP" : "NOTED"})`;
 
         showSarcasticPopup(title, msg);
 
@@ -2047,23 +2171,23 @@
       });
 
       /* ======================================================================
-         5. WIDGET 2: "ALMOST ABOUT ME" LORE MACHINE
+         5. WIDGET 2: "ALMOST ABOUT ME" BIOGRAPHICAL DISPENSER
          ====================================================================== */
       const loreItems = [
-        { tag: "MATH BRAIN", text: "Knows too much calculus and still counts on fingers sometimes." },
-        { tag: "MAKER MODE", text: "Probably 3D-printing an unnecessarily complex fidget contraption right now." },
-        { tag: "GRAVITY DEFIER", text: "Carving down hills on one wheel at questionable speeds." },
-        { tag: "AUDIO LAB", text: "Routing weird signals into synthesizers strictly 'for science'." },
-        { tag: "CREDENTIALS", text: "Certified flame-point cat butler & cognitive science wizard." },
-        { tag: "BIG THREE ENERGY", text: "Sagittarius Sun / Taurus Moon / Gemini Rising chaotic-cozy alignment." },
-        { tag: "INGREDIENT CHECK", text: "Currently avoiding artificial dyes, bad vibes, and boring beige websites." },
-        { tag: "METAPHYSICS", text: "97% sure reality runs on spaghetti JavaScript held together with duct tape." },
-        { tag: "SIDE QUESTS", text: "Will open 47 browser tabs at 1:30 AM to research an obscure 1980s synth chip." },
-        { tag: "COFFEE THEORY", text: "Believes every complex problem is just a smaller problem wearing a trench coat." },
-        { tag: "DOMAIN FLEX", text: "Bought trentbarker.com and immediately chose intentional Y2K chaos over a resume." },
-        { tag: "FELINE TAX", text: "Has never successfully worked on a keyboard without a cat stepping on Ctrl+Alt+Del." },
-        { tag: "PHYSICS NOTE", text: "Can explain eigen-things while simultaneously forgetting where the keys went." },
-        { tag: "SECRET STAT", text: "Runs at 128 BPM internally. Powered by curiosity and neon pixels." }
+        { tag: "ARITHMETIC", text: "Understands differential equations well enough to distrust a standard wooden ruler." },
+        { tag: "FABRICATION", text: "Spends four hours 3D-printing a bracket to hold a smaller, more nervous bracket." },
+        { tag: "TRANSPORT", text: "Travels horizontally on a single motorized wheel like a mildly suspicious lamppost." },
+        { tag: "SIGNAL PATH", text: "Plugs cables into synthesizers until the room sounds like a refrigerator learning French." },
+        { tag: "HOUSEHOLD", text: "Answers directly to a cream-colored cat with toasted ears and zero tax obligations." },
+        { tag: "COGNITION", text: "Studied how brains work and concluded they are mostly wet electricity guessing really fast." },
+        { tag: "GROCERY POLICY", text: "Reads ingredient labels with the intensity of a medieval customs inspector avoiding Red 40." },
+        { tag: "DOMAIN LOGIC", text: "Purchased trentbarker.com and immediately filled it with bouncing actors and unlabeled knobs." },
+        { tag: "HARDWARE", text: "Owns at least three mystery cords in a drawer that belong to devices from a previous century." },
+        { tag: "PHYSICS", text: "Occasionally pauses mid-sentence to verify whether gravity is still pointing downward." },
+        { tag: "TIMEKEEPING", text: "Operates on an internal clock that insists 11:42 PM is basically the early afternoon." },
+        { tag: "ACOUSTICS", text: "Will stop a conversation to identify the exact resonant frequency of a humming ceiling fan." },
+        { tag: "DOCUMENTATION", text: "Left several important notes on a napkin that has since achieved historical artifact status." },
+        { tag: "STATUS", text: "Currently located somewhere between a reasonable project and an inexplicable side quest." }
       ];
 
       const loreTextEl = document.getElementById("lore-text");
@@ -2109,14 +2233,12 @@
          ====================================================================== */
       const synthWaveSelect = document.getElementById("synth-wave");
 
-      // Soundboard Buttons
       document.querySelectorAll("[data-sfx]").forEach((btn) => {
         btn.addEventListener("click", () => {
           SoundEngine.playSfx(btn.dataset.sfx);
         });
       });
 
-      // Rainbow 8-Note Keyboard
       document.querySelectorAll(".synth-key").forEach((key) => {
         const triggerNote = () => {
           const freq = parseFloat(key.dataset.freq);
@@ -2127,7 +2249,6 @@
         key.addEventListener("pointerdown", triggerNote);
       });
 
-      // 4-Track x 8-Step Mini Sequencer
       const tracks = [
         { name: "KICK",  pattern: [1, 0, 0, 0, 1, 0, 1, 0], play: () => SoundEngine.playSfx("kick") },
         { name: "HAT",   pattern: [0, 1, 1, 1, 0, 1, 0, 1], play: () => SoundEngine.playSfx("hihat") },
@@ -2216,15 +2337,15 @@
       const eyesHappy = document.getElementById("cat-eyes-happy");
 
       const catMoods = [
-        "\"Judges your mouse movement.\"",
-        "\"Demands crunchy treats immediately.\"",
-        "\"Knocked your CSS off the table.\"",
-        "\"Purring at 60Hz resonant frequency!\"",
-        "\"Staring intensely at an invisible ghost.\"",
-        "\"Officially claimed your warm chair.\"",
-        "\"Toasted marshmallow mode: MAXIMUM.\"",
-        "\"Acceptable petting. Continue, human.\"",
-        "\"Walked across your keyboard: asdfjkl;;;\""
+        "\"Staring directly through the drywall at 1998.\"",
+        "\"Auditing your cursor for unlicensed motion.\"",
+        "\"Successfully pushed an imaginary nickel off the counter.\"",
+        "\"Vibrating at 60Hz like a well-maintained toaster.\"",
+        "\"Declined to comment on the whereabouts of your keys.\"",
+        "\"Has filed a formal complaint about the closed bathroom door.\"",
+        "\"Briefly forgot how gravity applies to blankets.\"",
+        "\"Accepting tributes. Receipts will not be provided.\"",
+        "\"Typed ';;;;;;;;;7' and walked away with dignity.\""
       ];
 
       let totalPets = 0;
@@ -2234,7 +2355,6 @@
         totalPets += 1;
         SoundEngine.playSfx("purr");
 
-        // Happy squint eyes briefly
         eyesOpen.style.display = "none";
         eyesHappy.style.display = "inline";
         clearTimeout(eyeTimeout);
@@ -2243,17 +2363,14 @@
           eyesHappy.style.display = "none";
         }, 480);
 
-        // Update Purr Power gauge & Level
         const level = Math.floor(totalPets / 7) + 1;
         const pct = ((totalPets % 7) / 7) * 100 || 100;
         purrLevelEl.textContent = `LVL ${level}`;
         petCountLabel.textContent = `${totalPets} pet${totalPets === 1 ? "" : "s"}`;
         purrBar.style.width = Math.max(12, pct) + "%";
 
-        // Update funny cat mood
         catMoodText.textContent = catMoods[totalPets % catMoods.length];
 
-        // Spawn floating heart inside polaroid
         const rect = catPetZone.getBoundingClientRect();
         const heart = document.createElement("span");
         heart.className = "cat-heart";
@@ -2308,17 +2425,16 @@
         collatzStepsEl.textContent = steps.toLocaleString();
         collatzPeakEl.textContent = maxVal.toLocaleString();
 
-        // Silly math commentary
         if (seq[0] === 1) {
-          collatzCommentEl.textContent = "> Already at 1. Zero drama. Very demure, very mathematical.";
+          collatzCommentEl.textContent = "> Input was already 1. The machine blinked once and went back to sleep.";
         } else if (steps > 150) {
-          collatzCommentEl.textContent = `> WHOA!! ${steps} hailstone steps! Your CPU is sweating neon phosphor.`;
+          collatzCommentEl.textContent = `> ${steps} steps recorded. This number took the scenic bypass through three counties.`;
         } else if (maxVal > 50000) {
-          collatzCommentEl.textContent = `> Peaked at ${maxVal.toLocaleString()} before plummeting back to 1. Classic 3n+1 rollercoaster!`;
+          collatzCommentEl.textContent = `> Reached an altitude of ${maxVal.toLocaleString()} without a flight plan, then collapsed back to 1.`;
         } else if (seq[0] === 27) {
-          collatzCommentEl.textContent = "> Classic 27! Tiny number, massive 9,232-high spike. Mathematicians hate this one trick.";
+          collatzCommentEl.textContent = "> Input 27 climbed to 9,232 out of pure stubbornness before collapsing into 4-2-1.";
         } else {
-          collatzCommentEl.textContent = `> Started at ${seq[0].toLocaleString()}, bounced ${steps} times, still couldn't escape the 4-2-1 loop!`;
+          collatzCommentEl.textContent = `> Departed from ${seq[0].toLocaleString()}, bounced ${steps} times, and landed in the usual 4-2-1 cul-de-sac.`;
         }
 
         let progress = 1;
@@ -2328,7 +2444,6 @@
           collatzCtx.fillStyle = "#030c04";
           collatzCtx.fillRect(0, 0, w, h);
 
-          // Retro grid lines
           collatzCtx.strokeStyle = "rgba(0, 255, 65, 0.14)";
           collatzCtx.lineWidth = 1;
           for (let gx = 0; gx < w; gx += 40) {
@@ -2359,7 +2474,6 @@
 
             for (let i = 0; i < count; i++) {
               const x = padX + (i / Math.max(1, seq.length - 1)) * plotW;
-              // Log-blended scaling so both massive spikes and lower steps stay crisp
               const norm = Math.log10(seq[i] + 1) / Math.log10(maxVal + 1);
               const y = h - padY - norm * plotH;
               if (i === 0) collatzCtx.moveTo(x, y);
@@ -2368,7 +2482,6 @@
             collatzCtx.stroke();
             collatzCtx.shadowBlur = 0;
 
-            // Highlight peak dot once reached
             if (count > peakIdx) {
               const px = padX + (peakIdx / Math.max(1, seq.length - 1)) * plotW;
               const py = padY;
@@ -2427,7 +2540,7 @@
       const spinnerBoostBtn = document.getElementById("spinner-boost-btn");
 
       let spinAngle = 0;
-      let spinVel = 0; // degrees per frame
+      let spinVel = 0;
       let maxRpm = 0;
 
       function boostSpinner(power = 18) {
@@ -2442,18 +2555,18 @@
       });
 
       function getSpinnerRank(rpm) {
-        if (rpm >= 1400) return "BREAKING SPACE-TIME!!";
-        if (rpm >= 950)  return "RELATIVISTIC TURBINE";
-        if (rpm >= 550)  return "ONEWHEEL DOWNHILL";
-        if (rpm >= 260)  return "3D PRINTER SPEED";
-        if (rpm >= 60)   return "WARMING UP";
-        return "IDLE POTATO";
+        if (rpm >= 1400) return "DEPARTING THE BUILDING";
+        if (rpm >= 950)  return "SMALL HELICOPTER";
+        if (rpm >= 550)  return "UNSUPERVISED BLENDER";
+        if (rpm >= 260)  return "CEILING FAN ON HIGH";
+        if (rpm >= 60)   return "LAZY SUSAN";
+        return "PARKING LOT ROCK";
       }
 
       function animateSpinner() {
         if (spinVel > 0.08) {
           spinAngle = (spinAngle + spinVel) % 360;
-          spinVel *= 0.991; // Smooth ceramic-bearing decay
+          spinVel *= 0.991;
           fidgetSvg.style.transform = `rotate(${spinAngle.toFixed(1)}deg)`;
         } else {
           spinVel = 0;
@@ -2487,10 +2600,9 @@
       function resetGraffitiCanvas() {
         gCtx.fillStyle = "#0c0417";
         gCtx.fillRect(0, 0, graffitiCanvas.width, graffitiCanvas.height);
-        // Subtle welcome doodle hint
         gCtx.fillStyle = "rgba(0, 247, 255, 0.25)";
         gCtx.font = "bold 14px monospace";
-        gCtx.fillText("// SCRIBBLE CHAOS HERE ->", 16, 26);
+        gCtx.fillText("// DRAW AN UNVERIFIED DIAGRAM ->", 16, 26);
       }
       resetGraffitiCanvas();
 
@@ -2576,24 +2688,23 @@
         void graffitiWidget.offsetWidth;
         graffitiWidget.classList.add("nuke-shaking");
 
-        // Flash bright white before clearing
         gCtx.fillStyle = "#ffffff";
         gCtx.fillRect(0, 0, graffitiCanvas.width, graffitiCanvas.height);
         setTimeout(resetGraffitiCanvas, 130);
       });
 
       /* ======================================================================
-         11. WIDGET 8: MYSTIC GLITCH TAROT ORACLE
+         11. WIDGET 8: UNREQUESTED ORACLE / GLITCH TAROT
          ====================================================================== */
       const tarotDeck = [
-        { num: "ARCANA 00", art: "♾️", title: "THE INFINITE LOOP", fortune: "A brilliant 2:47 AM side project approaches. Remember to save before overclocking reality.", hz: "432 Hz" },
-        { num: "ARCANA 01", art: "🐱", title: "THE TOASTED CAT", fortune: "A tiny feline overlord approves your vibes today. Offer snacks to unlock secret luck.", hz: "60 Hz (Purr)" },
-        { num: "ARCANA 02", art: "🛞", title: "THE ONE-WHEELED PROPHET", fortune: "Lean forward into chaos, keep your balance, and carve smoothly past all bad energy.", hz: "528 Hz" },
-        { num: "ARCANA 03", art: "🎛️", title: "THE UNPLUGGED SYNTH", fortune: "If the signal sounds silent, check the cable before rewriting the universe's firmware.", hz: "110 Hz (Acid)" },
-        { num: "ARCANA 04", art: "💡", title: "THE 3AM IDEA", fortune: "Looks completely unhinged on paper; somehow becomes your coolest creation by Thursday.", hz: "888 Hz" },
-        { num: "ARCANA 05", art: "🧙‍♂️", title: "THE OVERCLOCKED WIZARD", fortune: "Your calculus intuition is peaking. Count on fingers proudly if it gets the right answer.", hz: "741 Hz" },
-        { num: "ARCANA 06", art: "👾", title: "THE ROGUE PIXEL", fortune: "Perfection is overrated. One slightly crooked neon pixel gives the entire canvas soul.", hz: "256 Hz" },
-        { num: "ARCANA 07", art: "🍝", title: "THE SPAGHETTI DOM", fortune: "Everything overlaps yet somehow works cleanly. Trust the intentional chaos.", hz: "314 Hz" }
+        { num: "CARD 00", art: "🪑", title: "THE EXTRA CHAIR", fortune: "An object you misplaced in 2019 is currently sitting in plain sight pretending to be furniture.", hz: "432 Hz" },
+        { num: "CARD 01", art: "🐱", title: "THE TOASTED SUPERVISOR", fortune: "A small quadruped in the next room has already decided your schedule for Thursday.", hz: "60 Hz" },
+        { num: "CARD 02", art: "🛞", title: "THE SINGLE WHEEL", fortune: "Momentum solves most disagreements, provided you remember where the sidewalk ends.", hz: "528 Hz" },
+        { num: "CARD 03", art: "🎛️", title: "THE UNLABELED KNOB", fortune: "Turning it clockwise makes the room 4% louder. Nobody remembers what counter-clockwise does.", hz: "110 Hz" },
+        { num: "CARD 04", art: "🧦", title: "THE SECOND SOCK", fortune: "It is not missing. It simply transferred to a rival laundry department with better dental.", hz: "888 Hz" },
+        { num: "CARD 05", art: "📠", title: "THE 1996 FAX", fortune: "A confusing message will arrive slightly crooked, yet somehow answer a question you forgot to ask.", hz: "741 Hz" },
+        { num: "CARD 06", art: "🪜", title: "THE SHORT LADDER", fortune: "You are tall enough to reach the shelf, but only if nobody is watching you try.", hz: "256 Hz" },
+        { num: "CARD 07", art: "🧃", title: "THE LUKEWARM BEVERAGE", fortune: "Pause and check how long that mug has been sitting next to the monitor. Start fresh.", hz: "314 Hz" }
       ];
 
       const tarotCard = document.getElementById("tarot-card");
@@ -2602,10 +2713,21 @@
       let tarotFlipped = false;
       let lastTarotIdx = -1;
 
+      function populateRandomTarot() {
+        let idx = Math.floor(Math.random() * tarotDeck.length);
+        if (idx === lastTarotIdx) idx = (idx + 1) % tarotDeck.length;
+        lastTarotIdx = idx;
+        const c = tarotDeck[idx];
+        document.getElementById("tarot-numeral").textContent = c.num;
+        document.getElementById("tarot-art").textContent = c.art;
+        document.getElementById("tarot-title").textContent = c.title;
+        document.getElementById("tarot-fortune").textContent = c.fortune;
+        document.getElementById("tarot-hz").textContent = "ASSIGNED FREQUENCY: " + c.hz;
+      }
+
       function drawTarotCard() {
         SoundEngine.playSfx("chime");
         if (tarotFlipped) {
-          // Flip back briefly, swap card, flip forward again!
           tarotCard.classList.remove("flipped");
           tarotFlipped = false;
           setTimeout(() => {
@@ -2620,23 +2742,11 @@
         }
       }
 
-      function populateRandomTarot() {
-        let idx = Math.floor(Math.random() * tarotDeck.length);
-        if (idx === lastTarotIdx) idx = (idx + 1) % tarotDeck.length;
-        lastTarotIdx = idx;
-        const c = tarotDeck[idx];
-        document.getElementById("tarot-numeral").textContent = c.num;
-        document.getElementById("tarot-art").textContent = c.art;
-        document.getElementById("tarot-title").textContent = c.title;
-        document.getElementById("tarot-fortune").textContent = c.fortune;
-        document.getElementById("tarot-hz").textContent = "LUCKY FREQUENCY: " + c.hz;
-      }
-
       tarotScene.addEventListener("click", drawTarotCard);
       tarotDrawBtn.addEventListener("click", drawTarotCard);
 
       /* ======================================================================
-         12. WIDGET 9: 2007 FAKE SHOUTBOX / GUESTBOOK
+         12. WIDGET 9: 2007 GUESTBOOK SHOUTBOX (PERMANENT LOG STORAGE)
          ====================================================================== */
       const shoutContainer = document.getElementById("shoutbox-messages");
       const shoutForm = document.getElementById("shoutbox-form");
@@ -2644,25 +2754,35 @@
       const shoutMsgInput = document.getElementById("shout-msg");
       const shoutCountEl = document.getElementById("shout-count");
 
+      const SHOUTS_STORAGE_KEY = "trentbarker_shouts_v1";
+
       const defaultShouts = [
-        { name: "xX_CalcWizard_Xx", avatar: "🧙", time: "10/14/07 2:19 AM", msg: "yo trent ur site melted my Windows XP browser lol 10/10!! add me to ur top 8!!" },
-        { name: "DefinitelyNotACat", avatar: "🐱", time: "11/02/07 4:04 PM", msg: "meow. i mean hello fellow human. please leave tuna near the 3D printer thx." },
-        { name: "Webmaster2007", avatar: "💾", time: "11/19/07 9:42 PM", msg: "EPIC marquee banner dude!! where did u get the glitch cursor sparkles??" },
-        { name: "SynthGoblin99", avatar: "🎹", time: "12/08/07 11:58 PM", msg: "just played the rainbow keyboard for 12 minutes straight. pure cinema." },
-        { name: "iCarlyFan_4ever", avatar: "⭐", time: "01/05/08 3:33 PM", msg: "THIS WEBSITE HAS RANDOM DANCING ENERGY!! *hits DO NOT PRESS 5 times*" }
+        { name: "GaryFromFloor3", avatar: "🪑", time: "04/12/07 2:19 AM", msg: "left my thermos near the synth widget if anyone sees it. it is beige and makes a faint clicking sound." },
+        { name: "NotTheCat", avatar: "🐱", time: "06/03/07 4:04 PM", msg: "this website is fine. unrelated question: where is the tall cabinet key kept." },
+        { name: "MunicipalDuck", avatar: "🦆", time: "08/19/07 9:42 PM", msg: "i clicked the yellow button at the bottom and now there are six of us in here. rent seems fair." },
+        { name: "DialUpNeighbor", avatar: "📠", time: "10/08/07 11:58 PM", msg: "whoever is playing C4 and G4 over and over please keep going it is helping my houseplant grow." },
+        { name: "Visitor_814", avatar: "🛸", time: "11/21/07 3:33 PM", msg: "came here looking for a hardware store and accidentally spun a bearing to 1,200 rpm." }
       ];
 
       let shouts = [...defaultShouts];
       try {
-        const saved = localStorage.getItem("trentbarker_shouts_v1");
-        if (saved) {
-          const parsed = JSON.parse(saved);
+        // Load saved logs from v1 (and preserve any logs saved under v2 if present)
+        const savedV1 = localStorage.getItem(SHOUTS_STORAGE_KEY);
+        const savedV2 = localStorage.getItem("trentbarker_shouts_v2");
+        if (savedV1) {
+          const parsed = JSON.parse(savedV1);
           if (Array.isArray(parsed) && parsed.length > 0) shouts = parsed;
+        } else if (savedV2) {
+          const parsed = JSON.parse(savedV2);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            shouts = parsed;
+            localStorage.setItem(SHOUTS_STORAGE_KEY, JSON.stringify(shouts));
+          }
         }
       } catch (e) {}
 
       function escapeHtml(str) {
-        return str.replace(/[&<>"']/g, (ch) => ({
+        return String(str).replace(/[&<>"']/g, (ch) => ({
           "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
         }[ch]));
       }
@@ -2681,7 +2801,7 @@
           `;
           shoutContainer.appendChild(div);
         });
-        shoutCountEl.textContent = `${shouts.length} posts`;
+        shoutCountEl.textContent = `${shouts.length} post${shouts.length === 1 ? "" : "s"}`;
         shoutContainer.scrollTop = shoutContainer.scrollHeight;
       }
       renderShouts();
@@ -2690,21 +2810,23 @@
         e.preventDefault();
         const rawMsg = shoutMsgInput.value.trim();
         if (!rawMsg) return;
-        const fallbackHandles = ["CyberGuest_07", "NeonNomad", "GlitchFriend", "xX_PixelFan_Xx", "AnonWizard"];
+        const fallbackHandles = ["DrywallInspector", "FloorSevenGuest", "UnknownBicycle", "PlasticFork", "LocalLamp"];
         const name = shoutNameInput.value.trim() || fallbackHandles[Math.floor(Math.random() * fallbackHandles.length)];
         const avatars = ["⚡", "🦆", "👾", "🌈", "🔥", "🛸", "🐸", "✨"];
         const now = new Date();
+        const dateStr = now.toLocaleDateString([], { month: "2-digit", day: "2-digit", year: "2-digit" });
         const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
         shouts.push({
           name,
           avatar: avatars[Math.floor(Math.random() * avatars.length)],
-          time: "TODAY " + timeStr,
+          time: `${dateStr} ${timeStr}`,
           msg: rawMsg
         });
 
+        // Save full history forever (no truncation)
         try {
-          localStorage.setItem("trentbarker_shouts_v1", JSON.stringify(shouts.slice(-30)));
+          localStorage.setItem(SHOUTS_STORAGE_KEY, JSON.stringify(shouts));
         } catch (err) {}
 
         shoutMsgInput.value = "";
@@ -2723,10 +2845,10 @@
 
       const dvdColors = ["#39ff14", "#ff00cc", "#00f7ff", "#ffe600", "#ff6600", "#b366ff"];
       const cornerMessages = [
-        "ALRIGHTY THEN!! CORNER HIT!!",
-        "S-S-SMOKIN' CORNER HIT!!",
-        "JIM CARREY HIT THE CORNER!!",
-        "B-E-A-UTIFUL CORNER HIT!!"
+        "THE CORNER HAS BEEN CONTACTED BY JIM",
+        "GEOMETRY CONFIRMS: JIM HIT THE CORNER",
+        "ALRIGHTY THEN — CORNER IMPACT RECORDED",
+        "MAXIMUM CORNER PROXIMITY ACHIEVED"
       ];
       let dvdColorIdx = 0;
       let dvdX = 90;
@@ -2753,7 +2875,6 @@
       dvdEl.addEventListener("click", () => {
         dvdVx *= 1.25;
         dvdVy *= 1.25;
-        // Clamp speed so it doesn't teleport out of existence
         dvdVx = Math.sign(dvdVx) * Math.min(7.5, Math.abs(dvdVx));
         dvdVy = Math.sign(dvdVy) * Math.min(7.5, Math.abs(dvdVy));
         SoundEngine.playSfx("boing");
@@ -2837,7 +2958,6 @@
           dvdColorIdx = (dvdColorIdx + 1) % dvdColors.length;
           dvdEl.style.color = dvdColors[dvdColorIdx];
 
-          // Celebrate true or near-corner hit behind windows with 1400ms cooldown
           const now = performance.now();
           const nearLeftRight = dvdX < 28 || dvdX + w > vw - 28;
           const nearTopBot = dvdY < 28 || dvdY + h > vh - 102;
@@ -2996,13 +3116,12 @@
       dockTidyBtn.addEventListener("click", () => {
         applyDefaultPositions();
         SoundEngine.playSfx("chime");
-        showSarcasticPopup("🧹 TIDIED UP", "Windows restored to their scientifically calibrated 'intentional chaos' coordinates.");
+        showSarcasticPopup("🧹 TIDIED UP", "All windows have been returned to their original parking spaces.");
       });
 
-      // Boring Corporate Mode Prank!
+      // Boring Corporate Mode Prank
       dockCorpBtn.addEventListener("click", () => {
         corporateOverlay.classList.add("active");
-        // Pause sequencer if playing for comedic silence
         if (seqPlaying) loopToggleBtn.click();
         SoundEngine.playTone(220, 0.18, "sine", 0.08);
       });
@@ -3011,7 +3130,14 @@
         corporateOverlay.classList.remove("active");
         SoundEngine.playSfx("chaos");
         triggerEmojiRain(20);
-        showSarcasticPopup("WHEW!!", "Thank goodness. That Times New Roman almost drained our collective soul.");
+        showSarcasticPopup("SIGNAL RESTORED", "Emergency color supply restored. The beige room has been sealed.");
+      });
+
+      // Sound feedback on external project portal buttons
+      document.querySelectorAll(".portal-link-btn").forEach((link) => {
+        link.addEventListener("click", () => {
+          SoundEngine.playSfx("chime");
+        });
       });
 
       /* ======================================================================
